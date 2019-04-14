@@ -1,0 +1,23 @@
+{% load pokemon_data_manipulators %}
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'pokemon/style.css' %}">
+
+<form id="search-form" action="{% url 'index' %}" method="get" accept-charset="utf-8">
+    <button class="searchbutton" type="submit">
+        <i class="fa fa-search">Search</i>
+    </button>
+    <input class="searchfield" id="searchbox" name="search" type="text" placeholder="Search" value="{{ options.search }}">
+    <select name="version">
+        <option value="" selected disabled hidden>Choose game version</option>
+        {% for version in versions %}
+        {% if version.name == options.version %}
+        <option value="{{ version.name }}" selected>{{ version.name | split_cap }}</option>
+        {% else %}
+        <option value="{{ version.name }}">{{ version.name | split_cap }}</option>
+        {% endif %}
+        {% endfor %}
+    </select>
+</form>
+
+{% include "./info-display.html" %}

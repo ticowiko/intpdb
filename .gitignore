@@ -1,0 +1,10 @@
+pokemon/management/commands/data
+__pycache__/*
+*/__pycache__/*
+*/*/__pycache__/*
+*/*/*/__pycache__/*
+*/*/*/*/__pycache__/*
+*/migrations/*
+.idea
+intpdb.dump
+*.log
