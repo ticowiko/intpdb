@@ -13,6 +13,14 @@ def model_serializer_factory(cls):
     return Ret
 
 
+class PokemonTypeEffectivenessSerializer(serializers.Serializer):
+    attack = model_serializer_factory(MoveType)()
+
+    class Meta:
+        model = PokemonTypeEffectiveness
+        fields = '__all__'
+
+
 class RecursiveField(serializers.Serializer):
     def to_representation(self, value):
         serializer = self.parent.parent.__class__(value, context=self.context)
@@ -137,6 +145,7 @@ class PokemonSerializer(serializers.ModelSerializer):
     primary_type = model_serializer_factory(MoveType)()
     secondary_type = model_serializer_factory(MoveType)()
     pokemonability_set = PokemonAbilitySerializer(many=True)
+    pokemontypeeffectiveness_set = PokemonTypeEffectivenessSerializer(many=True)
 
     class Meta:
         model = Pokemon
@@ -146,4 +155,5 @@ class PokemonSerializer(serializers.ModelSerializer):
             'version_moves',
             'version_encounters',
             'pokemonability_set',
+            'pokemontypeeffectiveness_set',
         )

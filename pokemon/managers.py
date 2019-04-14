@@ -77,6 +77,8 @@ class PokemonVersionManager(Manager):
             ),
             'pokemonability_set',
             'pokemonability_set__ability',
+            'pokemontypeeffectiveness_set',
+            'pokemontypeeffectiveness_set__attack',
         ).select_related(
             'primary_type',
             'secondary_type',

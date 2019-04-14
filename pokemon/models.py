@@ -88,6 +88,16 @@ class TypeEffectiveness(Model):
     class Meta:
         unique_together = (('attack', 'defense'),)
 
+    @classmethod
+    def matrix(cls):
+        ret = {}
+        for entry in cls.objects.select_related(
+                'attack',
+                'defense',
+        ).all():
+            ret.setdefault(entry.attack.name, {})[entry.defense.name] = entry.effectiveness
+        return ret
+
 
 class MoveCategory(Model):
     # Vars
@@ -186,3 +196,9 @@ class PokemonMoves(Model):
 
     class Meta:
         unique_together = (('pokemon', 'version_group', 'move', 'learn_method', 'level'),)
+
+
+class PokemonTypeEffectiveness(Model):
+    pokemon = ForeignKey(Pokemon, on_delete=CASCADE)
+    attack = ForeignKey(MoveType, on_delete=CASCADE)
+    effectiveness = FloatField()
