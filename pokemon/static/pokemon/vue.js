@@ -22,14 +22,14 @@ var app = new Vue({
     this.onload()
   },
   methods: {
-    onload:function(){
+    onload:function() {
       axios({ method: "GET", "url": "/pokemon/api/versions/" }).then(result => {
         this.versions = result.data;
       }, error => {
         console.error(error);
       });
     },
-    update_version_info:function(){
+    update_version_info:function() {
       axios({
         method: "GET",
         "url": "/pokemon/api/versions/" + this.selected_version + "/"
@@ -39,7 +39,7 @@ var app = new Vue({
         console.error(error);
       });
     },
-    update_pokemon_set:function(){
+    update_pokemon_set:function() {
       axios({
         method: "GET",
         "url": "/pokemon/api/pokemon/?search=" + this.search + "&version=" + this.selected_version
@@ -53,6 +53,9 @@ var app = new Vue({
     debounced_update_pokemon_set: _.debounce(function(){
       this.update_pokemon_set();
     }, 500),
+    set_search:function(search) {
+      this.search = search;
+    },
     split_cap:function(text) {
       return split_cap(text);
     },
@@ -123,28 +126,7 @@ var app = new Vue({
 
 Vue.component('poke-display', {
   props: ['pokemon', 'color'],
-  template: `
-    <figure class="poke-display" v-bind:style="'background-color: ' + color">
-        <img v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" class="poke-sprite">
-        <figcaption class="poke-caption">
-            <table style="text-align:center">
-                <tr>
-                    <th colspan="2">
-                        {{ split_cap(pokemon.form_name) }}
-                    </th>
-                </tr>
-                <tr>
-                    <td v-bind:class="pokemon.primary_type.name + ' type-sprite'">
-                        {{ split_cap(pokemon.primary_type.name) }}
-                    </td>
-                    <td v-if="pokemon.secondary_type" v-bind:class="pokemon.secondary_type.name + ' type-sprite'">
-                        {{ split_cap(pokemon.secondary_type.name) }}
-                    </td>
-                </tr>
-            </table>
-        </figcaption>
-    </figure>
-  `,
+  template: "#poke-display",
   methods: {
     split_cap:function(text) {
       return split_cap(text);

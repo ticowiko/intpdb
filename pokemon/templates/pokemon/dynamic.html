@@ -123,7 +123,7 @@
             </table>
                 <table class="type-effectiveness-container">
                     <tr>
-                        <th class="evo-header">Type Effectiveness</th>
+                        <th class="evo-header">Defensive Type Effectiveness</th>
                     </tr>
                     <tr>
                         <td>
@@ -133,7 +133,7 @@
                                     <td>
                                         <table>
                                             <tr>
-                                                <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness > 1">
+                                                <td v-bind:class="type_effectiveness.attack.name + ' type-spriommte'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness > 1">
                                                     <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
                                                 </td>
                                             </tr>
@@ -192,7 +192,7 @@
                                         <tr v-for="move in method_moves(pokemon.version_moves, learn_method)">
                                             <td class="move-entry" v-if="learn_method == 'level-up'">{{ move.level }}</td>
                                             <td class="move-entry" v-else-if="learn_method == 'machine'">{{ move.tm.name }}</td>
-                                            <td v-bind:class="'move-entry' + stab_style(move.move, pokemon)" style="text-align: left"><span v-bind:title="move.move.description">{{ split_cap(move.move.name) }}</span></td>
+                                            <td v-bind:class="'move-entry' + stab_style(move.move, pokemon)" style="text-align: left; cursor: help;"><span v-bind:title="move.move.description">{{ split_cap(move.move.name) }}</span></td>
                                             <td v-bind:class="'move-entry ' + move.move.type.name">{{ split_cap(move.move.type.name) }}</td>
                                             <td v-bind:class="'move-entry ' + move.move.category">{{ move.move.category }}</td>
                                             <td class="move-entry">{{ convert_if_none(move.move.power, '-') }}</td>
@@ -278,6 +278,29 @@
     </table>
 
 </div>
+
+<template id="poke-display">
+    <figure class="poke-display" v-bind:style="'background-color: ' + color" v-on:click="$parent.set_search(pokemon.form_name)">
+        <img v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" class="poke-sprite">
+        <figcaption class="poke-caption">
+            <table style="text-align:center">
+                <tr>
+                    <th colspan="2">
+                        {{ split_cap(pokemon.form_name) }}
+                    </th>
+                </tr>
+                <tr>
+                    <td v-bind:class="pokemon.primary_type.name + ' type-sprite'">
+                        {{ split_cap(pokemon.primary_type.name) }}
+                    </td>
+                    <td v-if="pokemon.secondary_type" v-bind:class="pokemon.secondary_type.name + ' type-sprite'">
+                        {{ split_cap(pokemon.secondary_type.name) }}
+                    </td>
+                </tr>
+            </table>
+        </figcaption>
+    </figure>
+</template>
 
 {% endverbatim %}
 
