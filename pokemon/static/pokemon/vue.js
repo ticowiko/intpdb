@@ -16,7 +16,14 @@ var app = new Vue({
     version_info: {},
     versions: [],
     pokemon_set: [],
-    version: {}
+    display: {
+      stats: true,
+      evo: true,
+      types: false,
+      moves: false,
+      encounters: false,
+      abilities: false
+    }
   },
   mounted:function(){
     this.onload()
@@ -116,7 +123,7 @@ var app = new Vue({
   watch: {
     selected_version: function() {
       this.update_version_info();
-      this.debounced_update_pokemon_set();
+      this.update_pokemon_set();
     },
     search: function() {
       this.debounced_update_pokemon_set();

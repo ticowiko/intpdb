@@ -326,18 +326,25 @@
     background-color: #fff0e6;
 }
 
-/* List handling */
+/* Animation handling */
 
 .pokemon-list-item {
-  display: inline-block;
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .pokemon-list-enter-active, .pokemon-list-leave-active {
-  transition: all 0.5s;
+    transition: all 0.5s;
 }
 
 .pokemon-list-enter, .pokemon-list-leave-to {
+    opacity: 0;
+    transform: translateX(30px);
+}
+
+.info-block-enter-active, .info-block-leave-active {
+  transition: opacity .5s;
+}
+
+.info-block-enter, .info-block-leave-to {
   opacity: 0;
-  transform: translateX(30px);
 }
