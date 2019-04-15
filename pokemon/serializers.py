@@ -13,18 +13,18 @@ def model_serializer_factory(cls):
     return Ret
 
 
-class PokemonTypeEffectivenessSerializer(serializers.Serializer):
+class RecursiveField(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
+
+
+class PokemonTypeEffectivenessSerializer(serializers.ModelSerializer):
     attack = model_serializer_factory(MoveType)()
 
     class Meta:
         model = PokemonTypeEffectiveness
         fields = '__all__'
-
-
-class RecursiveField(serializers.Serializer):
-    def to_representation(self, value):
-        serializer = self.parent.parent.__class__(value, context=self.context)
-        return serializer.data
 
 
 class VersionGroupSerializer(serializers.ModelSerializer):

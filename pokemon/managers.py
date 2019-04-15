@@ -4,7 +4,7 @@ from django.db.models import Manager, Prefetch, Q
 class PokemonVersionManager(Manager):
 
     def enrich(self, version_name=None, search=None):
-        from pokemon.models import PokemonMoves, Encounter, Species, Version
+        from pokemon.models import PokemonMoves, Encounter, Species, Version, PokemonTypeEffectiveness, PokemonAbility
         if not version_name:
             return self.get_queryset().none()
         version = Version.objects.select_related(
@@ -75,10 +75,22 @@ class PokemonVersionManager(Manager):
                 ),
                 to_attr='version_encounters',
             ),
-            'pokemonability_set',
-            'pokemonability_set__ability',
-            'pokemontypeeffectiveness_set',
-            'pokemontypeeffectiveness_set__attack',
+            Prefetch(
+                'pokemontypeeffectiveness_set',
+                queryset=PokemonTypeEffectiveness.objects.order_by(
+                    '-effectiveness',
+                ).select_related(
+                    'attack',
+                )
+            ),
+            Prefetch(
+                'pokemonability_set',
+                queryset=PokemonAbility.objects.order_by(
+                    'id',
+                ).select_related(
+                    'ability',
+                )
+            ),
         ).select_related(
             'primary_type',
             'secondary_type',

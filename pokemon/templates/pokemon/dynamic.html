@@ -30,30 +30,39 @@
                         <poke-display v-bind:pokemon="pokemon" color="white"></poke-display>
                     </td>
                     <td>
-                        <table class="graph">
+                        <table class="graph-container">
                             <tr>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.hp"></div></td>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.attack"></div></td>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.defense"></div></td>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_attack"></div></td>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_defense"></div></td>
-                                <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.speed"></div></td>
+                                <th class="evo-header">Stats</th>
                             </tr>
                             <tr>
-                                <td class="stat-value">{{ pokemon.hp }}</td>
-                                <td class="stat-value">{{ pokemon.attack }}</td>
-                                <td class="stat-value">{{ pokemon.defense }}</td>
-                                <td class="stat-value">{{ pokemon.special_attack }}</td>
-                                <td class="stat-value">{{ pokemon.special_defense }}</td>
-                                <td class="stat-value">{{ pokemon.speed }}</td>
-                            </tr>
-                            <tr>
-                                <td class="stat-name">HP</td>
-                                <td class="stat-name">Atk</td>
-                                <td class="stat-name">Def</td>
-                                <td class="stat-name">SpA</td>
-                                <td class="stat-name">SpD</td>
-                                <td class="stat-name">Sp</td>
+                                <td>
+                                    <table class="graph">
+                                        <tr>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.hp"></div></td>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.attack"></div></td>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.defense"></div></td>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_attack"></div></td>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_defense"></div></td>
+                                            <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.speed"></div></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stat-value">{{ pokemon.hp }}</td>
+                                            <td class="stat-value">{{ pokemon.attack }}</td>
+                                            <td class="stat-value">{{ pokemon.defense }}</td>
+                                            <td class="stat-value">{{ pokemon.special_attack }}</td>
+                                            <td class="stat-value">{{ pokemon.special_defense }}</td>
+                                            <td class="stat-value">{{ pokemon.speed }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="stat-name">HP</td>
+                                            <td class="stat-name">Atk</td>
+                                            <td class="stat-name">Def</td>
+                                            <td class="stat-name">SpA</td>
+                                            <td class="stat-name">SpD</td>
+                                            <td class="stat-name">Sp</td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                         </table>
                     </td>
@@ -112,6 +121,53 @@
                 </tr>
 
             </table>
+                <table class="type-effectiveness-container">
+                    <tr>
+                        <th class="evo-header">Type Effectiveness</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="type-effectiveness-table">
+                                <tr>
+                                    <td>Weak :</td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness > 1">
+                                                    <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Normal :</td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness == 1">
+                                                    <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Resistant :</td>
+                                    <td>
+                                        <table>
+                                            <tr>
+                                                <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness < 1">
+                                                    <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
                 <table>
                 <tr>
                     <td style="vertical-align:top" v-for="learn_method in learn_methods(pokemon.version_moves)">

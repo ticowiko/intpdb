@@ -106,10 +106,16 @@
 
 /* Stats styles */
 
+.graph-container{
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #ffb3b3;
+}
+
 .graph {
     border-radius: 10px;
     display:table;
-    border: 1px solid #aeaeae;
+    border: 1px solid black;
     background-color: #ffffcc;
     height: 200px;
 }
@@ -298,4 +304,23 @@
 .fairy {
     background-color: #EE99AC;
     border: 1px solid #9B6470;
+}
+
+.effectiveness {
+    color: white;
+    background-color: black;
+    border-radius: 33%;
+    font-weight: bold;
+}
+
+.type-effectiveness-container {
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #e6ccff;
+}
+
+.type-effectiveness-table {
+    border-radius: 10px;
+    border: 1px solid black;
+    background-color: #fff0e6;
 }
