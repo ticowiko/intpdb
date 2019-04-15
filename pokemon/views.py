@@ -58,19 +58,3 @@ def index(request):
             'options': request.GET,
         }
     )
-
-
-def dynamic(request):
-    pokemon = Pokemon.versioned.enrich(
-        version_name=request.GET.get('version'),
-        search=request.GET.get('search'),
-    )
-    return render(
-        request,
-        'pokemon/dynamic.html',
-        {
-            'versions': VersionSerializer(Version.objects.order_by('id').all(), many=True).data,
-            'pokemon_set': PokemonSerializer(pokemon, many=True).data,
-            'options': request.GET,
-        }
-    )

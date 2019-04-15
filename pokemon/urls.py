@@ -13,6 +13,5 @@ apipatterns = [
 
 urlpatterns = [
     re_path('^api/', include(apipatterns)),
-    re_path('^$', index, name='index'),
-    re_path('^dynamic/$', dynamic, name='index'),
+    re_path('^$', index, name='index')
 ]
