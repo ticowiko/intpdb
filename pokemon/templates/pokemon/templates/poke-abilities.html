@@ -1,0 +1,25 @@
+{% verbatim %}
+<template id="poke-abilities">
+    <table>
+        <tr>
+            <td style="vertical-align:top">
+                <table class="abilities-table-container">
+                    <tr>
+                        <td class="table-title">Abilities</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="abilities-table">
+                                <tr v-for="pokemonability in pokemon.pokemonability_set">
+                                    <td><b>{{ split_cap(pokemonability.ability.name) }}<i v-if="pokemonability.hidden"> (hidden)</i></b></td>
+                                    <td>{{ pokemonability.ability.description }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</template>
+{% endverbatim %}

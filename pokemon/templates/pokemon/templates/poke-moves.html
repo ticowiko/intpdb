@@ -1,0 +1,42 @@
+{% verbatim %}
+<template id="poke-moves">
+    <table>
+        <tr>
+            <td style="vertical-align:top" v-for="learn_method in learn_methods(pokemon.version_moves)">
+                <table class="move-container">
+                    <tr>
+                        <td class="table-title">By {{ split_cap(learn_method) }}</td>
+                        <td class="table-title-info">{{ mid_slash(version_info.version_group.name) }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table class="move-table">
+                                <tr style="background-color: #ffc299">
+                                    <th class="move-header" v-if="learn_method == 'level-up'">Level</th>
+                                    <th class="move-header" v-else-if="learn_method == 'machine'">TM/HM</th>
+                                    <th class="move-header">Move</th>
+                                    <th class="move-header">Type</th>
+                                    <th class="move-header">Category</th>
+                                    <th class="move-header">Power</th>
+                                    <th class="move-header">Accuracy</th>
+                                    <th class="move-header">PP</th>
+                                </tr>
+                                <tr v-for="move in method_moves(pokemon.version_moves, learn_method)">
+                                    <td class="move-entry" v-if="learn_method == 'level-up'">{{ move.level }}</td>
+                                    <td class="move-entry" v-else-if="learn_method == 'machine'">{{ move.tm.name }}</td>
+                                    <td v-bind:class="'move-entry' + stab_style(move.move, pokemon)" style="text-align: left; cursor: help;"><span v-bind:title="move.move.description">{{ split_cap(move.move.name) }}</span></td>
+                                    <td v-bind:class="'move-entry ' + move.move.type.name">{{ split_cap(move.move.type.name) }}</td>
+                                    <td v-bind:class="'move-entry ' + move.move.category">{{ move.move.category }}</td>
+                                    <td class="move-entry">{{ convert_if_none(move.move.power, '-') }}</td>
+                                    <td class="move-entry">{{ convert_if_none(move.move.accuracy, '-') }}</td>
+                                    <td class="move-entry">{{ move.move.pp }}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</template>
+{% endverbatim %}

@@ -1,0 +1,24 @@
+{% verbatim %}
+<template id="poke-display">
+    <figure class="poke-display" v-bind:style="'background-color: ' + color" v-on:click="$root.set_search(pokemon.form_name)">
+        <img v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" class="poke-sprite">
+        <figcaption class="poke-caption">
+            <table style="text-align:center">
+                <tr>
+                    <th colspan="2">
+                        {{ split_cap(pokemon.form_name) }}
+                    </th>
+                </tr>
+                <tr>
+                    <td v-bind:class="pokemon.primary_type.name + ' type-sprite'">
+                        {{ split_cap(pokemon.primary_type.name) }}
+                    </td>
+                    <td v-if="pokemon.secondary_type" v-bind:class="pokemon.secondary_type.name + ' type-sprite'">
+                        {{ split_cap(pokemon.secondary_type.name) }}
+                    </td>
+                </tr>
+            </table>
+        </figcaption>
+    </figure>
+</template>
+{% endverbatim %}

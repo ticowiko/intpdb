@@ -1,0 +1,54 @@
+{% verbatim %}
+<template id="poke-evo">
+    <table class="evo-table-container">
+        <tr>
+            <th class="evo-header" colspan="0">
+                Evolution Chain
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <table class="evo-table">
+                    <tr>
+                        <td v-for="rank in evo_ranks(pokemon.species.evolution_chain.species_set)">
+                            <table>
+                                <tr align="middle" v-for="evolution in rank_evos(pokemon.species.evolution_chain.species_set, rank)">
+                                    <td v-if="rank">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table class="evo-conditions">
+                                                        <tr>
+                                                            <td style="font-weight: bold; font-size: 1.25em;">
+                                                                {{ split_cap(evolution.evolution_condition.trigger.name) }}
+                                                            </td>
+                                                        </tr>
+                                                        <tr v-for="condition in evolution.evo_summary">
+                                                            <td>
+                                                                {{ condition }}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr align="middle">
+                                                <td><span style="font-size:2em;">&#10230;</span></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td v-if="evolution.name == pokemon.species.name">
+                                        <poke-display v-bind:pokemon="evolution.main_form" color="#ffb3b3"></poke-display>
+                                    </td>
+                                    <td v-else>
+                                        <poke-display v-bind:pokemon="evolution.main_form" color="white"></poke-display>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</template>
+{% endverbatim %}

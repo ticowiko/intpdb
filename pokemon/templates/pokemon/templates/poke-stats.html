@@ -1,0 +1,39 @@
+{% verbatim %}
+<template id="poke-stats">
+    <table class="graph-container">
+        <tr>
+            <th class="evo-header">Stats</th>
+        </tr>
+        <tr>
+            <td>
+                <table class="graph">
+                    <tr>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.hp"></div></td>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.attack"></div></td>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.defense"></div></td>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_attack"></div></td>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.special_defense"></div></td>
+                        <td class="bar-cell"><div class="bar" v-bind:style="'height: ' + pokemon.speed"></div></td>
+                    </tr>
+                    <tr>
+                        <td class="stat-value">{{ pokemon.hp }}</td>
+                        <td class="stat-value">{{ pokemon.attack }}</td>
+                        <td class="stat-value">{{ pokemon.defense }}</td>
+                        <td class="stat-value">{{ pokemon.special_attack }}</td>
+                        <td class="stat-value">{{ pokemon.special_defense }}</td>
+                        <td class="stat-value">{{ pokemon.speed }}</td>
+                    </tr>
+                    <tr>
+                        <td class="stat-name">HP</td>
+                        <td class="stat-name">Atk</td>
+                        <td class="stat-name">Def</td>
+                        <td class="stat-name">SpA</td>
+                        <td class="stat-name">SpD</td>
+                        <td class="stat-name">Sp</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</template>
+{% endverbatim %}
