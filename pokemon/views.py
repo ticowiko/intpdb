@@ -45,16 +45,7 @@ class PokemonSingularView(RetrieveAPIView):
 
 
 def index(request):
-    pokemon = Pokemon.versioned.enrich(
-        version_name=request.GET.get('version'),
-        search=request.GET.get('search'),
-    )
     return render(
         request,
         'pokemon/index.html',
-        {
-            'versions': VersionSerializer(Version.objects.order_by('id').all(), many=True).data,
-            'pokemon_set': PokemonSerializer(pokemon, many=True).data,
-            'options': request.GET,
-        }
     )
