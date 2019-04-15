@@ -325,3 +325,19 @@
     border: 1px solid black;
     background-color: #fff0e6;
 }
+
+/* List handling */
+
+.pokemon-list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.pokemon-list-enter-active, .pokemon-list-leave-active {
+  transition: all 0.5s;
+}
+
+.pokemon-list-enter, .pokemon-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}

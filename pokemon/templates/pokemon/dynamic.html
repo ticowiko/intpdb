@@ -22,7 +22,8 @@
     </form>
 
     <table>
-        <tr v-for="pokemon in pokemon_set">
+        <tbody name="pokemon-list" is="transition-group" tag="div">
+        <tr v-for="pokemon in pokemon_set" v-bind:key="pokemon.form_name" class="pokemon-list-item">
             <td class="all-poke-info">
                 <table>
                 <tr>
@@ -275,6 +276,7 @@
             </table>
             </td>
         </tr>
+        </tbody>
     </table>
 
 </div>

@@ -79,6 +79,7 @@ class PokemonVersionManager(Manager):
                 'pokemontypeeffectiveness_set',
                 queryset=PokemonTypeEffectiveness.objects.order_by(
                     '-effectiveness',
+                    'attack__name',
                 ).select_related(
                     'attack',
                 )
