@@ -26,6 +26,14 @@ class VersionSingularView(RetrieveAPIView):
     ).all()
 
 
+class TypeEffectivenessPluralView(ListAPIView):
+    serializer_class = TypeEffectivenessSerializer
+    queryset = TypeEffectiveness.objects.select_related(
+        'attack',
+        'defense',
+    ).all()
+
+
 class PokemonPluralView(ListAPIView):
     serializer_class = PokemonSerializer
 

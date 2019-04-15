@@ -8,6 +8,7 @@ apipatterns = [
     re_path('^pokemon/(?P<id>[0-9]+)/$', PokemonSingularView.as_view()),
     re_path('^versions/$', VersionPluralView.as_view()),
     re_path('^versions/(?P<name>.+)/$', VersionSingularView.as_view()),
+    re_path('^type_effectiveness/$', TypeEffectivenessPluralView.as_view()),
 ]
 
 

@@ -19,6 +19,15 @@ class RecursiveField(serializers.Serializer):
         return serializer.data
 
 
+class TypeEffectivenessSerializer(serializers.ModelSerializer):
+    attack = model_serializer_factory(MoveType)()
+    defense = model_serializer_factory(MoveType)()
+
+    class Meta:
+        model = TypeEffectiveness
+        fields = '__all__'
+
+
 class PokemonTypeEffectivenessSerializer(serializers.ModelSerializer):
     attack = model_serializer_factory(MoveType)()
 
