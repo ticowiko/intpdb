@@ -199,110 +199,109 @@
                     </tr>
                 </table>
                 <table v-if="display.moves">
-                <tr>
-                    <td style="vertical-align:top" v-for="learn_method in learn_methods(pokemon.version_moves)">
-                        <table class="move-container">
-                            <tr>
-                                <td class="table-title">By {{ split_cap(learn_method) }}</td>
-                                <td class="table-title-info">{{ mid_slash(version_info.version_group.name) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table class="move-table">
-                                        <tr style="background-color: #ffc299">
-                                            <th class="move-header" v-if="learn_method == 'level-up'">Level</th>
-                                            <th class="move-header" v-else-if="learn_method == 'machine'">TM/HM</th>
-                                            <th class="move-header">Move</th>
-                                            <th class="move-header">Type</th>
-                                            <th class="move-header">Category</th>
-                                            <th class="move-header">Power</th>
-                                            <th class="move-header">Accuracy</th>
-                                            <th class="move-header">PP</th>
-                                        </tr>
-                                        <tr v-for="move in method_moves(pokemon.version_moves, learn_method)">
-                                            <td class="move-entry" v-if="learn_method == 'level-up'">{{ move.level }}</td>
-                                            <td class="move-entry" v-else-if="learn_method == 'machine'">{{ move.tm.name }}</td>
-                                            <td v-bind:class="'move-entry' + stab_style(move.move, pokemon)" style="text-align: left; cursor: help;"><span v-bind:title="move.move.description">{{ split_cap(move.move.name) }}</span></td>
-                                            <td v-bind:class="'move-entry ' + move.move.type.name">{{ split_cap(move.move.type.name) }}</td>
-                                            <td v-bind:class="'move-entry ' + move.move.category">{{ move.move.category }}</td>
-                                            <td class="move-entry">{{ convert_if_none(move.move.power, '-') }}</td>
-                                            <td class="move-entry">{{ convert_if_none(move.move.accuracy, '-') }}</td>
-                                            <td class="move-entry">{{ move.move.pp }}</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <td style="vertical-align:top" v-for="learn_method in learn_methods(pokemon.version_moves)">
+                            <table class="move-container">
+                                <tr>
+                                    <td class="table-title">By {{ split_cap(learn_method) }}</td>
+                                    <td class="table-title-info">{{ mid_slash(version_info.version_group.name) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table class="move-table">
+                                            <tr style="background-color: #ffc299">
+                                                <th class="move-header" v-if="learn_method == 'level-up'">Level</th>
+                                                <th class="move-header" v-else-if="learn_method == 'machine'">TM/HM</th>
+                                                <th class="move-header">Move</th>
+                                                <th class="move-header">Type</th>
+                                                <th class="move-header">Category</th>
+                                                <th class="move-header">Power</th>
+                                                <th class="move-header">Accuracy</th>
+                                                <th class="move-header">PP</th>
+                                            </tr>
+                                            <tr v-for="move in method_moves(pokemon.version_moves, learn_method)">
+                                                <td class="move-entry" v-if="learn_method == 'level-up'">{{ move.level }}</td>
+                                                <td class="move-entry" v-else-if="learn_method == 'machine'">{{ move.tm.name }}</td>
+                                                <td v-bind:class="'move-entry' + stab_style(move.move, pokemon)" style="text-align: left; cursor: help;"><span v-bind:title="move.move.description">{{ split_cap(move.move.name) }}</span></td>
+                                                <td v-bind:class="'move-entry ' + move.move.type.name">{{ split_cap(move.move.type.name) }}</td>
+                                                <td v-bind:class="'move-entry ' + move.move.category">{{ move.move.category }}</td>
+                                                <td class="move-entry">{{ convert_if_none(move.move.power, '-') }}</td>
+                                                <td class="move-entry">{{ convert_if_none(move.move.accuracy, '-') }}</td>
+                                                <td class="move-entry">{{ move.move.pp }}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
                 <table v-if="display.encounters">
-                <tr>
-                    <td style="vertical-align:top">
-                        <table class="encounter-container">
-                            <tr>
-                                <td class="table-title">Encounters</td>
-                                <td class="table-title-info">{{ split_cap(version_info.name) }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table class="encounter-table">
-                                        <tr style="background-color: #ffc299">
-                                            <th class="encounter-header">Location</th>
-                                            <th class="encounter-header">Method</th>
-                                            <th class="encounter-header">Condition</th>
-                                            <th class="encounter-header">Chance</th>
-                                            <th class="encounter-header">Level</th>
-                                        </tr>
-                                        <template v-for="species in pokemon.species.evolution_chain.species_set" v-if="species.main_form.version_encounters.length">
-                                        <tr>
-                                            <td colspan="5">
-                                                <table class="species-encounter">
-                                                    <tr>
-                                                        <td><img class="poke-sprite" v-bind:src="species.main_form.sprite_url"></td>
-                                                        <td class="table-title">{{ split_cap(species.main_form.form_name) }}</td>
-                                                    </tr>
-                                                </table>
-                                            </td>
-                                        </tr>
-                                        <tr v-for="encounter in species.main_form.version_encounters">
-                                            <td class="encounter-entry">{{ split_cap(encounter.location.name) }}</td>
-                                            <td class="encounter-entry">{{ split_cap(encounter.method.name) }}</td>
-                                            <td class="encounter-entry" v-if="encounter.condition">{{ split_cap(encounter.condition.name) }}</td>
-                                            <td class="encounter-entry" v-else>-</td>
-                                            <td class="encounter-entry">{{ encounter.chance }}%</td>
-                                            <td class="encounter-entry">{{ encounter.min_level }} - {{ encounter.max_level }}</td>
-                                        </tr>
-                                        </template>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-            </table>
+                    <tr>
+                        <td style="vertical-align:top">
+                            <table class="encounter-container">
+                                <tr>
+                                    <td class="table-title">Encounters</td>
+                                    <td class="table-title-info">{{ split_cap(version_info.name) }}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table class="encounter-table">
+                                            <tr style="background-color: #ffc299">
+                                                <th class="encounter-header">Location</th>
+                                                <th class="encounter-header">Method</th>
+                                                <th class="encounter-header">Condition</th>
+                                                <th class="encounter-header">Chance</th>
+                                                <th class="encounter-header">Level</th>
+                                            </tr>
+                                            <template v-for="species in pokemon.species.evolution_chain.species_set" v-if="species.main_form.version_encounters.length">
+                                            <tr>
+                                                <td colspan="5">
+                                                    <table class="species-encounter">
+                                                        <tr>
+                                                            <td><img class="poke-sprite" v-bind:src="species.main_form.sprite_url"></td>
+                                                            <td class="table-title">{{ split_cap(species.main_form.form_name) }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr v-for="encounter in species.main_form.version_encounters">
+                                                <td class="encounter-entry">{{ split_cap(encounter.location.name) }}</td>
+                                                <td class="encounter-entry">{{ split_cap(encounter.method.name) }}</td>
+                                                <td class="encounter-entry" v-if="encounter.condition">{{ split_cap(encounter.condition.name) }}</td>
+                                                <td class="encounter-entry" v-else>-</td>
+                                                <td class="encounter-entry">{{ encounter.chance }}%</td>
+                                                <td class="encounter-entry">{{ encounter.min_level }} - {{ encounter.max_level }}</td>
+                                            </tr>
+                                            </template>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
                 <table v-if="display.abilities">
-                <tr>
-                    <td style="vertical-align:top">
-                        <table class="abilities-table-container">
-                            <tr>
-                                <td class="table-title">Abilities</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table class="abilities-table">
-                                        <tr v-for="pokemonability in pokemon.pokemonability_set">
-                                            <td><b>{{ split_cap(pokemonability.ability.name) }}<i v-if="pokemonability.hidden"> (hidden)</i></b></td>
-                                            <td>{{ pokemonability.ability.description }}</td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <td style="vertical-align:top">
+                            <table class="abilities-table-container">
+                                <tr>
+                                    <td class="table-title">Abilities</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <table class="abilities-table">
+                                            <tr v-for="pokemonability in pokemon.pokemonability_set">
+                                                <td><b>{{ split_cap(pokemonability.ability.name) }}<i v-if="pokemonability.hidden"> (hidden)</i></b></td>
+                                                <td>{{ pokemonability.ability.description }}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
         </tbody>
