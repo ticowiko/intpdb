@@ -311,7 +311,7 @@
 </div>
 
 <template id="poke-display">
-    <figure class="poke-display" v-bind:style="'background-color: ' + color" v-on:click="$parent.set_search(pokemon.form_name)">
+    <figure class="poke-display" v-bind:style="'background-color: ' + color" v-on:click="$root.set_search(pokemon.form_name)">
         <img v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" class="poke-sprite">
         <figcaption class="poke-caption">
             <table style="text-align:center">
