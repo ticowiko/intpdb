@@ -5,10 +5,13 @@ from pokemon.views import *
 
 apipatterns = [
     re_path('^pokemon/$', PokemonPluralView.as_view()),
-    re_path('^pokemon/(?P<id>[0-9]+)/$', PokemonSingularView.as_view()),
+    re_path('^pokemon/(?P<form_name>.+)/$', PokemonSingularView.as_view()),
     re_path('^versions/$', VersionPluralView.as_view()),
     re_path('^versions/(?P<name>.+)/$', VersionSingularView.as_view()),
     re_path('^type_effectiveness/$', TypeEffectivenessPluralView.as_view()),
+    re_path('^type_effectiveness/(?P<attack>.+)/(?P<defense>.+)/$', TypeEffectivenessSingularView.as_view()),
+    re_path('^locations/$', LocationPluralView.as_view()),
+    re_path('^locations/(?P<name>.+)/$', LocationSingularView.as_view()),
 ]
 
 

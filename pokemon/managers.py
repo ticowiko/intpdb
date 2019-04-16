@@ -100,3 +100,22 @@ class PokemonVersionManager(Manager):
             'species__main_form__primary_type',
             'species__main_form__secondary_type',
         ).filter(filters)
+
+
+class LocationVersionManager(Manager):
+
+    def enrich(self, version_name=None, search=None):
+        from pokemon.models import PokemonMoves, Encounter, Species, Version, PokemonTypeEffectiveness, PokemonAbility
+        if not version_name:
+            return self.get_queryset().none()
+        version = Version.objects.select_related(
+            'version_group__generation',
+        ).get(name=version_name)
+        # TODO filter routes with no encounters
+        filters = Q()
+        if search:
+            for term in search.split():
+                filters = filters & (Q(name__istartswith=term) | Q(name__icontains='-'+term))
+        return self.get_queryset().order_by(
+            'id',
+        )

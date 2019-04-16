@@ -1,7 +1,7 @@
 from django.db.models import *
 from django.contrib.postgres.fields import JSONField
 
-from pokemon.managers import PokemonVersionManager
+from pokemon.managers import PokemonVersionManager, LocationVersionManager
 
 
 class Generation(Model):
@@ -143,6 +143,8 @@ class Location(Model):
     id = IntegerField(primary_key=True)
     name = CharField(max_length=50, unique=True)
 
+    objects = Manager()
+    versioned = LocationVersionManager()
 
 class EncounterMethod(Model):
     id = IntegerField(primary_key=True)

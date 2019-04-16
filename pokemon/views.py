@@ -34,6 +34,40 @@ class TypeEffectivenessPluralView(ListAPIView):
     ).all()
 
 
+class TypeEffectivenessSingularView(RetrieveAPIView):
+    serializer_class = TypeEffectivenessSerializer
+    queryset = TypeEffectiveness.objects.select_related(
+        'attack',
+        'defense',
+    ).all()
+
+    def get_object(self):
+        return self.queryset.get(
+            attack__name=self.kwargs['attack'],
+            defense__name=self.kwargs['defense'],
+        )
+
+
+class LocationPluralView(ListAPIView):
+    serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        return Location.versioned.enrich(
+            self.request.GET.get('version'),
+            self.request.GET.get('search'),
+        ).all()
+
+
+class LocationSingularView(RetrieveAPIView):
+    lookup_field = 'name'
+    serializer_class = LocationSerializer
+
+    def get_queryset(self):
+        return Location.versioned.enrich(
+            self.request.GET.get('version', 'red'),
+        ).all()
+
+
 class PokemonPluralView(ListAPIView):
     serializer_class = PokemonSerializer
 
@@ -45,11 +79,13 @@ class PokemonPluralView(ListAPIView):
 
 
 class PokemonSingularView(RetrieveAPIView):
-    lookup_field = 'id'
+    lookup_field = 'form_name'
     serializer_class = PokemonSerializer
 
     def get_queryset(self):
-        return Pokemon.versioned.enrich(Version.objects.get(name=self.request.GET.get('version', 'red'))).all()
+        return Pokemon.versioned.enrich(
+            self.request.GET.get('version', 'red'),
+        ).all()
 
 
 def index(request):
