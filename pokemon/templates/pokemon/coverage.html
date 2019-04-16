@@ -1,0 +1,118 @@
+{% load pokemon_data_manipulators %}
+{% load static %}
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{% static 'pokemon/style.css' %}">
+
+{% verbatim %}
+
+<div id="poke-coverage">
+
+    <table class="coverage-container">
+        <tr>
+            <td>
+                Available types :
+            </td>
+            <td>
+                <span v-for="type in types" v-bind:class="'type-sprite ' + type" style="cursor: pointer;" v-on:click="select_type(type)">
+                    {{ split_cap(type) }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Selected types :
+            </td>
+            <td>
+                <span v-for="type in selected" v-bind:class="'type-sprite ' + type" style="cursor: pointer;" v-on:click="unselect_type(type)">
+                    {{ split_cap(type) }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Type coverage :
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <span class="effectiveness"> 2 &times; </span> : :
+                        </td>
+                        <td>
+                            <span v-for="type_effectiveness in coverage" v-if="type_effectiveness.effectiveness == 2" v-bind:class="'type-sprite ' + type_effectiveness.type">
+                                {{ split_cap(type_effectiveness.type) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="effectiveness"> 1 &times; </span> : :
+                        </td>
+                        <td>
+                            <span v-for="type_effectiveness in coverage" v-if="type_effectiveness.effectiveness == 1" v-bind:class="'type-sprite ' + type_effectiveness.type">
+                                {{ split_cap(type_effectiveness.type) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="effectiveness"> 0.5 &times; </span> : :
+                        </td>
+                        <td>
+                            <span v-for="type_effectiveness in coverage" v-if="type_effectiveness.effectiveness == 0.5" v-bind:class="'type-sprite ' + type_effectiveness.type">
+                                {{ split_cap(type_effectiveness.type) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="effectiveness"> 0 &times; </span> :
+                        </td>
+                        <td>
+                            <span v-for="type_effectiveness in coverage" v-if="type_effectiveness.effectiveness == 0" v-bind:class="'type-sprite ' + type_effectiveness.type">
+                                {{ split_cap(type_effectiveness.type) }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+
+    <table class="type-chart-container">
+        <tr>
+            <th class="evo-header">
+                Type Chart
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <table class="type-chart">
+                    <tr>
+                        <th></th>
+                        <th style="width: 60px; border: 1px solid black;" v-for="defense in types" v-bind:class="defense">{{ split_cap(defense) }}</th>
+                    </tr>
+                    <tr v-for="attack in types">
+                        <td v-bind:class="attack">
+                            {{ split_cap(attack) }}
+                        </td>
+                        <td v-for="defense in types" v-bind:style="effectiveness_style(matrix[attack][defense])">
+                            <center>{{ matrix[attack][defense] }}</center>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+{% endverbatim %}
+
+<script src="{% static 'pokemon/poke-coverage.js' %}"></script>

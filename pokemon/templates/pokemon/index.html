@@ -9,7 +9,7 @@
 
 {% verbatim %}
 
-<div id="app">
+<div id="poke-search">
 
     <form id="search-form" accept-charset="utf-8" onsubmit="return false;" class="form-container">
         <div>
@@ -46,6 +46,9 @@
                 </tr>
             </table>
         </div>
+        <div>
+            <a href="/pokemon/coverage/">Type coverage calculator</a>
+        </div>
     </form>
 
     <table>
@@ -57,13 +60,13 @@
                         <td>
                             <poke-display v-bind:pokemon="pokemon" color="white"></poke-display>
                         </td>
-                        <td v-if="display.stats" style="display: inline-block">
+                        <td v-if="display.stats" style="display: inline-block;">
                             <poke-stats v-bind:pokemon="pokemon"></poke-stats>
                         </td>
-                        <td v-if="display.evo" style="display: inline-block">
+                        <td v-if="display.evo" style="display: inline-block;">
                             <poke-evo v-bind:pokemon="pokemon"></poke-evo>
                         </td>
-                        <td v-if="display.types" style="display: inline-block">
+                        <td v-if="display.types" style="display: inline-block;">
                             <poke-types v-bind:pokemon="pokemon"></poke-types>
                         </td>
                     </tr>

@@ -7,8 +7,8 @@ function mid_slash(text) {
   return unslashed.slice(0, unslashed.length/2).join(' ') + '/' + unslashed.slice(unslashed.length/2, unslashed.length).join(' ')
 }
 
-var app = new Vue({
-  el: '#app',
+var poke_search = new Vue({
+  el: '#poke-search',
   data: {
     search: '',
     selected_version: '',
@@ -26,7 +26,7 @@ var app = new Vue({
     }
   },
   mounted:function(){
-    this.onload()
+    this.onload();
   },
   methods: {
     onload:function() {
@@ -47,6 +47,9 @@ var app = new Vue({
       });
     },
     update_pokemon_set:function() {
+      if (this.search == '') {
+        return;
+      }
       axios({
         method: "GET",
         "url": "/pokemon/api/pokemon/?search=" + this.search + "&version=" + this.selected_version

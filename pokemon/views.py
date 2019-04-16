@@ -57,3 +57,10 @@ def index(request):
         request,
         'pokemon/index.html',
     )
+
+
+def coverage(request):
+    return render(
+        request,
+        'pokemon/coverage.html',
+    )

@@ -10,37 +10,25 @@
                     <tr>
                         <td>Weak :</td>
                         <td>
-                            <table>
-                                <tr>
-                                    <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness > 1">
-                                        <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
-                                    </td>
-                                </tr>
-                            </table>
+                            <span v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness > 1">
+                                <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <td>Normal :</td>
                         <td>
-                            <table>
-                                <tr>
-                                    <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness == 1">
-                                        <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
-                                    </td>
-                                </tr>
-                            </table>
+                            <span v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness == 1">
+                                <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                            </span>
                         </td>
                     </tr>
                     <tr>
                         <td>Resistant :</td>
                         <td>
-                            <table>
-                                <tr>
-                                    <td v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness < 1">
-                                        <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
-                                    </td>
-                                </tr>
-                            </table>
+                            <span v-bind:class="type_effectiveness.attack.name + ' type-sprite'" v-for="type_effectiveness in pokemon.pokemontypeeffectiveness_set" v-if="type_effectiveness.effectiveness < 1">
+                                <span class="effectiveness"> {{ type_effectiveness.effectiveness }} &times; </span> {{ split_cap(type_effectiveness.attack.name) }}
+                            </span>
                         </td>
                     </tr>
                 </table>
