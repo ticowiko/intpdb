@@ -52,8 +52,8 @@
     </form>
 
     <table>
-        <tbody name="pokemon-list" is="transition-group" tag="div">
-        <tr v-for="pokemon in pokemon_set" v-bind:key="pokemon.form_name" class="pokemon-list-item">
+        <tbody name="search-list" is="transition-group" tag="div">
+        <tr v-for="pokemon in pokemon_set" v-bind:key="pokemon.form_name" class="search-list-item">
             <td class="all-poke-info">
                 <table>
                     <tr>
@@ -76,6 +76,11 @@
                 <poke-abilities v-bind:pokemon="pokemon" v-if="display.abilities"></poke-abilities>
             </td>
         </tr>
+        <tr v-for="location in location_set" v-bind:key="location.name" class="search-list-item">
+            <td class="all-location-info">
+                <location-encounters v-bind:location="location" v-bind:version_info="version_info"></location-encounters>
+            </td>
+        </tr>
         </tbody>
     </table>
 
@@ -91,5 +96,7 @@
 {% include "./templates/poke-moves.html" %}
 {% include "./templates/poke-encounters.html" %}
 {% include "./templates/poke-abilities.html" %}
+
+{% include "./templates/location-encounters.html" %}
 
 <script src="{% static 'pokemon/poke-search.js' %}"></script>

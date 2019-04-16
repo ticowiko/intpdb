@@ -1,43 +1,31 @@
 {% verbatim %}
-<template id="poke-encounters">
+<template id="location-encounters">
     <table>
         <tr>
             <td style="vertical-align:top">
                 <table class="encounter-container">
                     <tr>
-                        <td class="table-title">Encounters</td>
+                        <td class="table-title">{{ split_cap(location.name) }}</td>
                         <td class="table-title-info">{{ split_cap(version_info.name) }}</td>
                     </tr>
                     <tr>
                         <td colspan="2">
                             <table class="encounter-table">
                                 <tr style="background-color: #ffc299">
-                                    <th class="encounter-header">Location</th>
+                                    <th class="encounter-header">Pokemon</th>
                                     <th class="encounter-header">Method</th>
                                     <th class="encounter-header">Condition</th>
                                     <th class="encounter-header">Chance</th>
                                     <th class="encounter-header">Level</th>
                                 </tr>
-                                <template v-for="species in pokemon.species.evolution_chain.species_set" v-if="species.main_form.version_encounters.length">
-                                <tr>
-                                    <td colspan="5">
-                                        <table class="species-encounter">
-                                            <tr>
-                                                <td><img class="poke-sprite" v-bind:src="species.main_form.sprite_url"></td>
-                                                <td class="table-title">{{ split_cap(species.main_form.form_name) }}</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr v-for="encounter in species.main_form.version_encounters">
-                                    <td class="encounter-entry" v-on:click="$root.set_search(split_cap(encounter.location.name))">{{ split_cap(encounter.location.name) }}</td>
+                                <tr v-for="encounter in location.version_encounters">
+                                    <td class="encounter-entry">{{ split_cap(encounter.pokemon.form_name) }}</td>
                                     <td class="encounter-entry">{{ split_cap(encounter.method.name) }}</td>
                                     <td class="encounter-entry" v-if="encounter.condition">{{ split_cap(encounter.condition.name) }}</td>
                                     <td class="encounter-entry" v-else>-</td>
                                     <td class="encounter-entry">{{ encounter.chance }}%</td>
                                     <td class="encounter-entry">{{ encounter.min_level }} - {{ encounter.max_level }}</td>
                                 </tr>
-                                </template>
                             </table>
                         </td>
                     </tr>
