@@ -55,7 +55,7 @@ class LocationPluralView(ListAPIView):
         return Location.versioned.enrich(
             self.request.GET.get('version'),
             self.request.GET.get('search'),
-        ).all()
+        ).all()[0:5]
 
 
 class LocationSingularView(RetrieveAPIView):
