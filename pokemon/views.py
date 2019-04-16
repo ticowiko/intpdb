@@ -69,7 +69,7 @@ class LocationSingularView(RetrieveAPIView):
 
 
 class PokemonPluralView(ListAPIView):
-    serializer_class = PokemonSerializer
+    serializer_class = PokemonVersionEnrichedSerializer
 
     def get_queryset(self):
         return Pokemon.versioned.enrich(
@@ -80,7 +80,7 @@ class PokemonPluralView(ListAPIView):
 
 class PokemonSingularView(RetrieveAPIView):
     lookup_field = 'form_name'
-    serializer_class = PokemonSerializer
+    serializer_class = PokemonVersionEnrichedSerializer
 
     def get_queryset(self):
         return Pokemon.versioned.enrich(

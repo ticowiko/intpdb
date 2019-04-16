@@ -146,6 +146,7 @@ class Location(Model):
     objects = Manager()
     versioned = LocationVersionManager()
 
+
 class EncounterMethod(Model):
     id = IntegerField(primary_key=True)
     name = CharField(max_length=50, unique=True)

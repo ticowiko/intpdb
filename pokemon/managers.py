@@ -1,4 +1,4 @@
-from django.db.models import Manager, Prefetch, Q
+from django.db.models import Manager, Prefetch, Q, Count, Case, When, IntegerField
 
 
 class PokemonVersionManager(Manager):
@@ -105,17 +105,49 @@ class PokemonVersionManager(Manager):
 class LocationVersionManager(Manager):
 
     def enrich(self, version_name=None, search=None):
-        from pokemon.models import PokemonMoves, Encounter, Species, Version, PokemonTypeEffectiveness, PokemonAbility
+        from pokemon.models import PokemonMoves, Encounter, EncounterRate, Species, Version, PokemonTypeEffectiveness, PokemonAbility
         if not version_name:
             return self.get_queryset().none()
         version = Version.objects.select_related(
             'version_group__generation',
         ).get(name=version_name)
-        # TODO filter routes with no encounters
-        filters = Q()
+        filters = Q(n_version_encounters__gt=0)
         if search:
             for term in search.split():
                 filters = filters & (Q(name__istartswith=term) | Q(name__icontains='-'+term))
         return self.get_queryset().order_by(
             'id',
-        )
+        ).annotate(
+            n_version_encounters=Count(Case(When(encounter__version=version, then=1), output_field=IntegerField()))
+        ).prefetch_related(
+            Prefetch(
+                'encounter_set',
+                queryset=Encounter.objects.select_related(
+                    'method',
+                    'condition',
+                    'pokemon',
+                    'pokemon__primary_type',
+                    'pokemon__secondary_type',
+                ).filter(
+                    version=version,
+                ).order_by(
+                    'method_id',
+                    'condition_id',
+                    'pokemon_id',
+                    'min_level',
+                ),
+                to_attr='version_encounters',
+            )
+        ).prefetch_related(
+            Prefetch(
+                'encounterrate_set',
+                queryset=EncounterRate.objects.select_related(
+                    'method',
+                ).filter(
+                    version=version,
+                ).order_by(
+                    'method_id',
+                ),
+                to_attr='version_encounter_rates',
+            )
+        ).filter(filters)

@@ -52,7 +52,7 @@ class VersionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class EncounterSerializer(serializers.ModelSerializer):
+class EncounterPokemonSerializer(serializers.ModelSerializer):
     location = model_serializer_factory(Location)()
     condition = model_serializer_factory(EncounterCondition)()
     method = model_serializer_factory(EncounterMethod)()
@@ -82,7 +82,7 @@ class PokemonMoveSerializer(serializers.ModelSerializer):
 
 
 class PokemonEvoInfoSerializer(serializers.ModelSerializer):
-    version_encounters = EncounterSerializer(many=True)
+    version_encounters = EncounterPokemonSerializer(many=True)
     primary_type = model_serializer_factory(MoveType)()
     secondary_type = model_serializer_factory(MoveType)()
 
@@ -147,9 +147,9 @@ class PokemonAbilitySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PokemonSerializer(serializers.ModelSerializer):
+class PokemonVersionEnrichedSerializer(serializers.ModelSerializer):
     version_moves = PokemonMoveSerializer(many=True)
-    version_encounters = EncounterSerializer(many=True)
+    version_encounters = EncounterPokemonSerializer(many=True)
     species = SpeciesSerializer()
     primary_type = model_serializer_factory(MoveType)()
     secondary_type = model_serializer_factory(MoveType)()
@@ -168,8 +168,42 @@ class PokemonSerializer(serializers.ModelSerializer):
         )
 
 
+class PokemonSerializer(serializers.ModelSerializer):
+    primary_type = model_serializer_factory(MoveType)()
+    secondary_type = model_serializer_factory(MoveType)()
+
+    class Meta:
+        model = Pokemon
+        fields = '__all__'
+
+
+class EncounterLocationSerializer(serializers.ModelSerializer):
+    condition = model_serializer_factory(EncounterCondition)()
+    method = model_serializer_factory(EncounterMethod)()
+    pokemon = PokemonSerializer()
+
+    class Meta:
+        model = Encounter
+        fields = '__all__'
+
+
+class EncounterRateSerializer(serializers.ModelSerializer):
+    method = model_serializer_factory(EncounterMethod)()
+
+    class Meta:
+        model = Encounter
+        fields = '__all__'
+
+
 class LocationSerializer(serializers.ModelSerializer):
+    version_encounters = EncounterLocationSerializer(many=True)
+    version_encounter_rates = EncounterRateSerializer(many=True)
 
     class Meta:
         model = Location
-        fields = '__all__'
+        fields = tuple(
+            field.name for field in Location._meta.fields
+        ) + (
+            'version_encounters',
+            'version_encounter_rates',
+        )
