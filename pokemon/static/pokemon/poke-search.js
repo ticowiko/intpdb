@@ -286,3 +286,13 @@ Vue.component('location-encounters', {
     }
   }
 })
+
+Vue.component('poke-inline', {
+  props: ['pokemon'],
+  template: "#poke-inline",
+  methods: {
+    split_cap:function(text) {
+      return split_cap(text);
+    }
+  }
+})

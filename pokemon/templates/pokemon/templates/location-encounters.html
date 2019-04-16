@@ -12,6 +12,7 @@
                         <td colspan="2">
                             <table class="encounter-table">
                                 <tr style="background-color: #ffc299">
+                                    <th class="encounter-header"></th>
                                     <th class="encounter-header">Pokemon</th>
                                     <th class="encounter-header">Method</th>
                                     <th class="encounter-header">Condition</th>
@@ -19,6 +20,7 @@
                                     <th class="encounter-header">Level</th>
                                 </tr>
                                 <tr v-for="encounter in location.version_encounters">
+                                    <td class="encounter-entry"><poke-inline v-bind:pokemon="encounter.pokemon"></poke-inline></td>
                                     <td class="encounter-entry">{{ split_cap(encounter.pokemon.form_name) }}</td>
                                     <td class="encounter-entry">{{ split_cap(encounter.method.name) }}</td>
                                     <td class="encounter-entry" v-if="encounter.condition">{{ split_cap(encounter.condition.name) }}</td>
