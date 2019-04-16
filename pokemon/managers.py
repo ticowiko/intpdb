@@ -114,7 +114,11 @@ class LocationVersionManager(Manager):
         filters = Q(n_version_encounters__gt=0)
         if search:
             for term in search.split():
-                filters = filters & (Q(name__istartswith=term) | Q(name__icontains='-'+term))
+                try:
+                    int(term)
+                    filters = filters & Q(name__icontains='-' + term + '-')
+                except ValueError:
+                    filters = filters & (Q(name__istartswith=term) | Q(name__icontains='-'+term))
         return self.get_queryset().order_by(
             'id',
         ).annotate(
