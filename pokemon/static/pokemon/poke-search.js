@@ -36,8 +36,19 @@ var poke_search = new Vue({
       }, error => {
         console.error(error);
       });
+      this.load_from_url();
+    },
+    load_from_url:function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('search')) {
+        this.search = urlParams.get('search');
+      }
+      if (urlParams.has('version')) {
+        this.selected_version = urlParams.get('version');
+      }
     },
     update_version_info:function() {
+      history.pushState(null, "Int. PDB", this.construct_query_string());
       axios({
         method: "GET",
         url: "/pokemon/api/versions/" + this.selected_version + "/"
@@ -51,6 +62,9 @@ var poke_search = new Vue({
       if (this.search == '') {
         return;
       }
+      if (this.selected_version == '') {
+        return;
+      }
       axios({
         method: "GET",
         url: "/pokemon/api/pokemon/?search=" + this.search + "&version=" + this.selected_version
@@ -62,10 +76,14 @@ var poke_search = new Vue({
       });
     },
     debounced_update_pokemon_set: _.debounce(function(){
+      history.pushState(null, "Int. PDB", this.construct_query_string());
       this.update_pokemon_set();
     }, 500),
     update_location_set:function() {
       if (this.search == '') {
+        return;
+      }
+      if (this.selected_version == '') {
         return;
       }
       axios({
@@ -81,8 +99,23 @@ var poke_search = new Vue({
     debounced_update_location_set: _.debounce(function(){
       this.update_location_set();
     }, 500),
+    construct_query_string:function(){
+      if (this.selected_version != '' && this.search != '') {
+        return "?version=" + this.selected_version + "&search=" + this.search;
+      }
+      if (this.selected_version != '') {
+        return "?version=" + this.selected_version;
+      }
+      if (this.search != '') {
+        return "?search=" + this.search;
+      }
+      return ''
+    },
     set_search:function(search) {
       this.search = search;
+    },
+    set_version:function(version) {
+      this.selected_version = version;
     },
     split_cap:function(text) {
       return split_cap(text);
@@ -153,6 +186,10 @@ var poke_search = new Vue({
     }
   }
 })
+
+window.onpopstate = function(event) {
+  poke_search.load_from_url();
+}
 
 Vue.component('poke-display', {
   props: ['pokemon', 'color'],
