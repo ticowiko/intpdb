@@ -19,7 +19,7 @@ var poke_coverage = new Vue({
   },
   methods: {
     onload:function() {
-      axios({ method: "GET", "url": "/pokemon/api/type_effectiveness/" }).then(result => {
+      axios({ method: "GET", "url": "/api/type_effectiveness/" }).then(result => {
         for (var i = 0; i < result.data.length; i++) {
           if ( ! (result.data[i].attack.name in this.matrix) ) {
             this.matrix[result.data[i].attack.name] = {};
