@@ -8,6 +8,7 @@ __pycache__/*
 .idea
 intpdb.dump
 *.log
+static
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
