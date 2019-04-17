@@ -47,8 +47,14 @@ var poke_search = new Vue({
         this.selected_version = urlParams.get('version');
       }
     },
+    update_history:function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      if (this.construct_query_string() != urlParams.toString()) {
+        history.pushState(null, "Int. PDB", '?' + this.construct_query_string());
+      }
+    },
     update_version_info:function() {
-      history.pushState(null, "Int. PDB", this.construct_query_string());
+      this.update_history();
       axios({
         method: "GET",
         url: "/pokemon/api/versions/" + this.selected_version + "/"
@@ -76,7 +82,7 @@ var poke_search = new Vue({
       });
     },
     debounced_update_pokemon_set: _.debounce(function(){
-      history.pushState(null, "Int. PDB", this.construct_query_string());
+      this.update_history();
       this.update_pokemon_set();
     }, 500),
     update_location_set:function() {
@@ -101,13 +107,13 @@ var poke_search = new Vue({
     }, 500),
     construct_query_string:function(){
       if (this.selected_version != '' && this.search != '') {
-        return "?version=" + this.selected_version + "&search=" + this.search;
+        return "version=" + this.selected_version + "&search=" + this.search;
       }
       if (this.selected_version != '') {
-        return "?version=" + this.selected_version;
+        return "version=" + this.selected_version;
       }
       if (this.search != '') {
-        return "?search=" + this.search;
+        return "search=" + this.search;
       }
       return ''
     },
