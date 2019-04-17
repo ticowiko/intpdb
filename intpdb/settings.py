@@ -25,7 +25,9 @@ SECRET_KEY = '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'intpdb-prod.vhempmca9w.eu-west-3.elasticbeanstalk.com',
+]
 
 
 # Application definition
@@ -89,6 +91,15 @@ DATABASES = {
     },
 }
 
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASES.default = {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ['RDS_DB_NAME'],
+        'USER': os.environ['RDS_USERNAME'],
+        'PASSWORD': os.environ['RDS_PASSWORD'],
+        'HOST': os.environ['RDS_HOSTNAME'],
+        'PORT': os.environ['RDS_PORT'],
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -128,3 +139,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
