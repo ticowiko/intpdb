@@ -31,7 +31,7 @@ var poke_search = new Vue({
   },
   methods: {
     onload:function() {
-      axios({ method: "GET", url: "/pokemon/api/versions/" }).then(result => {
+      axios({ method: "GET", url: "/api/versions/" }).then(result => {
         this.versions = result.data;
       }, error => {
         console.error(error);
@@ -57,7 +57,7 @@ var poke_search = new Vue({
       this.update_history();
       axios({
         method: "GET",
-        url: "/pokemon/api/versions/" + this.selected_version + "/"
+        url: "/api/versions/" + this.selected_version + "/"
       }).then(result => {
         this.selected_version_info = result.data;
       }, error => {
@@ -73,7 +73,7 @@ var poke_search = new Vue({
       }
       axios({
         method: "GET",
-        url: "/pokemon/api/pokemon/?search=" + this.search + "&version=" + this.selected_version
+        url: "/api/pokemon/?search=" + this.search + "&version=" + this.selected_version
       }).then(result => {
         this.version_info = this.selected_version_info;
         this.pokemon_set = result.data;
@@ -94,7 +94,7 @@ var poke_search = new Vue({
       }
       axios({
         method: "GET",
-        url: "/pokemon/api/locations/?search=" + this.search + "&version=" + this.selected_version
+        url: "/api/locations/?search=" + this.search + "&version=" + this.selected_version
       }).then(result => {
         this.version_info = this.selected_version_info;
         this.location_set = result.data;
