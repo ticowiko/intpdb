@@ -26,6 +26,7 @@ SECRET_KEY = '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    'localhost',
     'intpdb-prod.vhempmca9w.eu-west-3.elasticbeanstalk.com',
 ]
 

@@ -4,87 +4,97 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+<script src="https://unpkg.com/vue-cookies@1.5.12/vue-cookies.js"></script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'pokemon/style.css' %}">
 
 {% verbatim %}
 
-<div id="poke-search">
+<head>
+    <meta charset="UTF-8">
+    <title>The Interactive Pokémon Database</title>
+</head>
 
-    <form id="search-form" accept-charset="utf-8" onsubmit="return false;" class="form-container">
-        <div>
-            <button class="searchbutton" v-on:click="update_pokemon_set">
-                Search
-            </button>
-            <input type="text" class="searchfield" v-model="search" placeholder="Search">
-            <select name="version" v-model="selected_version">
-                <option value="" selected disabled hidden>Choose game version</option>
-                <option v-for="version in versions" v-bind:value="version.name">{{ split_cap(version.name) }}</option>
-            </select>
-        </div>
-        <div>
-            <table>
-                <tr>
-                    <td>
-                        <input type="checkbox" v-model="display.stats">Stats
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="display.evo">Evolution
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="display.types">Type Effectiveness
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="display.moves">Moves
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="display.encounters">Encounters
-                    </td>
-                    <td>
-                        <input type="checkbox" v-model="display.abilities">Abilities
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div>
-            <a href="/coverage/">Type coverage calculator</a>
-        </div>
-    </form>
+<body>
 
-    <table>
-        <tbody name="search-list" is="transition-group" tag="div">
-        <tr v-for="pokemon in pokemon_set" v-bind:key="pokemon.form_name" class="search-list-item">
-            <td class="all-poke-info">
+    <div id="poke-search">
+
+        <form id="search-form" accept-charset="utf-8" onsubmit="return false;" class="form-container">
+            <div>
+                <button class="searchbutton" v-on:click="update_pokemon_set">
+                    Search
+                </button>
+                <input type="text" class="searchfield" v-model="search" placeholder="Search">
+                <select name="version" v-model="selected_version">
+                    <option value="" selected disabled hidden>Choose game version</option>
+                    <option v-for="version in versions" v-bind:value="version.name">{{ split_cap(version.name) }}</option>
+                </select>
+            </div>
+            <div>
                 <table>
                     <tr>
                         <td>
-                            <poke-display v-bind:pokemon="pokemon" color="white"></poke-display>
+                            <input type="checkbox" v-model="display.stats">Stats
                         </td>
-                        <td v-if="display.stats" style="display: inline-block;">
-                            <poke-stats v-bind:pokemon="pokemon"></poke-stats>
+                        <td>
+                            <input type="checkbox" v-model="display.evo">Evolution
                         </td>
-                        <td v-if="display.evo" style="display: inline-block;">
-                            <poke-evo v-bind:pokemon="pokemon"></poke-evo>
+                        <td>
+                            <input type="checkbox" v-model="display.types">Type Effectiveness
                         </td>
-                        <td v-if="display.types" style="display: inline-block;">
-                            <poke-types v-bind:pokemon="pokemon"></poke-types>
+                        <td>
+                            <input type="checkbox" v-model="display.moves">Moves
+                        </td>
+                        <td>
+                            <input type="checkbox" v-model="display.encounters">Encounters
+                        </td>
+                        <td>
+                            <input type="checkbox" v-model="display.abilities">Abilities
                         </td>
                     </tr>
                 </table>
-                <poke-moves v-bind:pokemon="pokemon" v-bind:version_info="version_info" v-if="display.moves"></poke-moves>
-                <poke-encounters v-bind:pokemon="pokemon" v-bind:version_info="version_info" v-if="display.encounters"></poke-encounters>
-                <poke-abilities v-bind:pokemon="pokemon" v-if="display.abilities"></poke-abilities>
-            </td>
-        </tr>
-        <tr v-for="location in location_set" v-bind:key="location.name" class="search-list-item">
-            <td class="all-location-info">
-                <location-encounters v-bind:location="location" v-bind:version_info="version_info"></location-encounters>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            </div>
+            <div>
+                <a href="/coverage/">Type coverage calculator</a>
+            </div>
+        </form>
 
-</div>
+        <table>
+            <tbody name="search-list" is="transition-group" tag="div">
+            <tr v-for="pokemon in pokemon_set" v-bind:key="pokemon.form_name" class="search-list-item">
+                <td class="all-poke-info">
+                    <table>
+                        <tr>
+                            <td>
+                                <poke-display v-bind:pokemon="pokemon" color="white"></poke-display>
+                            </td>
+                            <td v-if="display.stats" style="display: inline-block;">
+                                <poke-stats v-bind:pokemon="pokemon"></poke-stats>
+                            </td>
+                            <td v-if="display.evo" style="display: inline-block;">
+                                <poke-evo v-bind:pokemon="pokemon"></poke-evo>
+                            </td>
+                            <td v-if="display.types" style="display: inline-block;">
+                                <poke-types v-bind:pokemon="pokemon"></poke-types>
+                            </td>
+                        </tr>
+                    </table>
+                    <poke-moves v-bind:pokemon="pokemon" v-bind:version_info="version_info" v-if="display.moves"></poke-moves>
+                    <poke-encounters v-bind:pokemon="pokemon" v-bind:version_info="version_info" v-if="display.encounters"></poke-encounters>
+                    <poke-abilities v-bind:pokemon="pokemon" v-if="display.abilities"></poke-abilities>
+                </td>
+            </tr>
+            <tr v-for="location in location_set" v-bind:key="location.name" class="search-list-item">
+                <td class="all-location-info">
+                    <location-encounters v-bind:location="location" v-bind:version_info="version_info"></location-encounters>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</body>
 
 {% endverbatim %}
 

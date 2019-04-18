@@ -36,6 +36,9 @@ var poke_search = new Vue({
       }, error => {
         console.error(error);
       });
+      if ($cookies.isKey('selected_version')) {
+        this.selected_version = $cookies.get('selected_version');
+      }
       this.load_from_url();
     },
     load_from_url:function() {
@@ -182,6 +185,7 @@ var poke_search = new Vue({
   },
   watch: {
     selected_version: function() {
+      $cookies.set('selected_version', this.selected_version);
       this.update_version_info();
       this.update_pokemon_set();
       this.update_location_set();
