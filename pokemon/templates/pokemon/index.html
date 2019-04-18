@@ -21,18 +21,14 @@
 
         <form id="search-form" accept-charset="utf-8" onsubmit="return false;" class="form-container">
             <div>
-                <input type="text" class="searchfield" v-model="search" placeholder="Search">
-                <ul class="autocomplete-results" v-if="suggestions.length">
-                    <li class="autocomplete-result" v-for="suggestion in suggestions" v-on:click="set_search(split_cap(suggestion.term))">{{ split_cap(suggestion.term) }}</li>
-                </ul>
-                <select name="version" v-model="selected_version">
-                    <option value="" selected disabled hidden>Choose game version</option>
-                    <option v-for="version in versions" v-bind:value="version.name">{{ split_cap(version.name) }}</option>
-                </select>
-            </div>
-            <div>
                 <table>
                     <tr>
+                        <td>
+                            <select name="version" v-model="selected_version">
+                                <option value="" selected disabled hidden>Choose game version</option>
+                                <option v-for="version in versions" v-bind:value="version.name">{{ split_cap(version.name) }}</option>
+                            </select>
+                        </td>
                         <td>
                             <input type="checkbox" v-model="display.stats">Stats
                         </td>
@@ -53,6 +49,9 @@
                         </td>
                     </tr>
                 </table>
+            </div>
+            <div>
+                <autocomplete v-bind:items="autocomplete" @input="set_search"></autocomplete>
             </div>
             <div>
                 <a href="/coverage/">Type coverage calculator</a>
@@ -97,6 +96,8 @@
 </body>
 
 {% endverbatim %}
+
+{% include "./templates/autocomplete.html" %}
 
 {% include "./templates/poke-display.html" %}
 {% include "./templates/poke-inline.html" %}
