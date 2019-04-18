@@ -4,6 +4,8 @@ from django.db.models import Q
 # noinspection PyUnresolvedReferences
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from pokemon.models import *
 from pokemon.serializers import *
@@ -86,6 +88,16 @@ class PokemonSingularView(RetrieveAPIView):
         return Pokemon.versioned.enrich(
             self.request.GET.get('version', 'red'),
         ).all()
+
+
+class AutoCompleteView(APIView):
+
+    def get(self, request):
+        return Response([
+                   pokemon.form_name for pokemon in Pokemon.objects.all()
+               ] + [
+            location.name for location in Location.objects.all()
+        ])
 
 
 def index(request):

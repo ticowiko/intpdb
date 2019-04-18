@@ -12,6 +12,7 @@ apipatterns = [
     re_path('^type_effectiveness/(?P<attack>.+)/(?P<defense>.+)/$', TypeEffectivenessSingularView.as_view()),
     re_path('^locations/$', LocationPluralView.as_view()),
     re_path('^locations/(?P<name>.+)/$', LocationSingularView.as_view()),
+    re_path('^autocomplete/$', AutoCompleteView.as_view()),
 ]
 
 

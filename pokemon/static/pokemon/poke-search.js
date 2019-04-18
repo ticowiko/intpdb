@@ -1,3 +1,41 @@
+function string_distance(a, b){
+  if(a.length == 0) return b.length;
+  if(b.length == 0) return a.length;
+
+  var matrix = [];
+
+  // increment along the first column of each row
+  var i;
+  for(i = 0; i <= b.length; i++){
+    matrix[i] = [i];
+  }
+
+  // increment each column in the first row
+  var j;
+  for(j = 0; j <= a.length; j++){
+    matrix[0][j] = j;
+  }
+
+  // Fill in the rest of the matrix
+  for(i = 1; i <= b.length; i++){
+    for(j = 1; j <= a.length; j++){
+      if(b.charAt(i-1) == a.charAt(j-1)){
+        matrix[i][j] = matrix[i-1][j-1];
+      } else {
+        matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
+                                Math.min(matrix[i][j-1] + 1, // insertion
+                                         matrix[i-1][j] + 1)); // deletion
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+};
+
+function split(text) {
+  return text.toLowerCase().split(/[ _-]/).join(' ');
+}
+
 function split_cap(text) {
   return text.toLowerCase().split(/[ _-]/).map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
 }
@@ -17,6 +55,8 @@ var poke_search = new Vue({
     versions: [],
     pokemon_set: [],
     location_set: [],
+    autocomplete: [],
+    suggestions: [],
     display: {
       stats: true,
       evo: true,
@@ -39,6 +79,17 @@ var poke_search = new Vue({
       if ($cookies.isKey('selected_version')) {
         this.selected_version = $cookies.get('selected_version');
       }
+      axios({ method: "GET", url: "/api/autocomplete/" }).then(result => {
+        this.autocomplete = result.data;
+        for (var i = 0; i < this.autocomplete.length; i++) {
+          this.autocomplete[i] = split(this.autocomplete[i]);
+        }
+      }, error => {
+        console.error(error);
+      });
+      if ($cookies.isKey('selected_version')) {
+        this.selected_version = $cookies.get('selected_version');
+      }
       this.load_from_url();
     },
     load_from_url:function() {
@@ -55,6 +106,22 @@ var poke_search = new Vue({
       if (this.construct_query_string() != urlParams.toString()) {
         history.pushState(null, "Int. PDB", '?' + this.construct_query_string());
       }
+    },
+    update_suggestions:function() {
+      search = this.search.toLowerCase();
+      tol = Math.floor( ( search.length - 1 ) / 2 );
+      suggestions = [];
+      for (var i = 0; i < this.autocomplete.length; i++) {
+        distance = string_distance(search, this.autocomplete[i].substring(0, this.search.length))
+        if ( distance <= tol ) {
+          suggestions.push({
+            term: this.autocomplete[i],
+            distance: string_distance(search, this.autocomplete[i].substring(0, this.search.length))
+          });
+        }
+      }
+      suggestions.sort(function(a, b){return a.distance - b.distance;});
+      this.suggestions = suggestions;
     },
     update_version_info:function() {
       this.update_history();
@@ -87,6 +154,7 @@ var poke_search = new Vue({
     debounced_update_pokemon_set: _.debounce(function(){
       this.update_history();
       this.update_pokemon_set();
+      this.update_suggestions();
     }, 500),
     update_location_set:function() {
       if (this.search == '') {

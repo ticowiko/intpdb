@@ -25,6 +25,9 @@
                     Search
                 </button>
                 <input type="text" class="searchfield" v-model="search" placeholder="Search">
+                <ul class="autocomplete-results">
+                    <li class="autocomplete-result" v-for="suggestion in suggestions" v-on:click="set_search(split_cap(suggestion.term))">{{ split_cap(suggestion.term) }}</li>
+                </ul>
                 <select name="version" v-model="selected_version">
                     <option value="" selected disabled hidden>Choose game version</option>
                     <option v-for="version in versions" v-bind:value="version.name">{{ split_cap(version.name) }}</option>
