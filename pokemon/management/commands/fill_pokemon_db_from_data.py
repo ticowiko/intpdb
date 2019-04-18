@@ -239,8 +239,10 @@ class Command(BaseCommand):
                 version = self.cacher.get(Version, name=version_detail['version']['name'])
                 for encounter_detail in version_detail['encounter_details']:
                     if len(encounter_detail['condition_values']) > 1:
-                        self.stderr.write("Skipping encounter with multiple conditions...")
-                        continue
+                        self.stderr.write("Found encounter with multiple conditions, using first condition...")
+                        condition = self.cacher.get(
+                            EncounterCondition, name=encounter_detail['condition_values'][0]['name']
+                        )
                     elif len(encounter_detail['condition_values']) == 1:
                         condition = self.cacher.get(
                             EncounterCondition, name=encounter_detail['condition_values'][0]['name']
