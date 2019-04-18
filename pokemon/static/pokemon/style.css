@@ -5,7 +5,10 @@
     margin: 0;
     border: 1px solid #eeeeee;
     height: 120px;
+    width: 200px;
     overflow: auto;
+    position: fixed;
+    background: white;
 }
 
 .autocomplete-result {

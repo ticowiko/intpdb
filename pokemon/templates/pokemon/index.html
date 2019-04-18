@@ -21,11 +21,8 @@
 
         <form id="search-form" accept-charset="utf-8" onsubmit="return false;" class="form-container">
             <div>
-                <button class="searchbutton" v-on:click="update_pokemon_set">
-                    Search
-                </button>
                 <input type="text" class="searchfield" v-model="search" placeholder="Search">
-                <ul class="autocomplete-results">
+                <ul class="autocomplete-results" v-if="suggestions.length">
                     <li class="autocomplete-result" v-for="suggestion in suggestions" v-on:click="set_search(split_cap(suggestion.term))">{{ split_cap(suggestion.term) }}</li>
                 </ul>
                 <select name="version" v-model="selected_version">
