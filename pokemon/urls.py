@@ -4,6 +4,7 @@ from pokemon.views import *
 
 
 apipatterns = [
+    re_path('^generations/$', GenerationPluralView.as_view()),
     re_path('^pokemon/$', PokemonPluralView.as_view()),
     re_path('^pokemon/(?P<form_name>.+)/$', PokemonSingularView.as_view()),
     re_path('^versions/$', VersionPluralView.as_view()),

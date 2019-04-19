@@ -207,3 +207,27 @@ class LocationSerializer(serializers.ModelSerializer):
             'version_encounters',
             'version_encounter_rates',
         )
+
+
+class SpeciesPokemonListSerializer(serializers.ModelSerializer):
+    pokemon_set = PokemonSerializer(many=True)
+
+    class Meta:
+        model = Species
+        fields = tuple(
+            field.name for field in Species._meta.fields
+        ) + (
+            'pokemon_set',
+        )
+
+
+class GenerationPokemonListSerializer(serializers.ModelSerializer):
+    species_set = SpeciesPokemonListSerializer(many=True)
+
+    class Meta:
+        model = Generation
+        fields = tuple(
+            field.name for field in Generation._meta.fields
+        ) + (
+            'species_set',
+        )

@@ -19,6 +19,7 @@ var poke_search = new Vue({
     selected_version_info: {},
     version_info: {},
     versions: [],
+    generations: [],
     pokemon_set: [],
     location_set: [],
     autocomplete: [],
@@ -41,9 +42,6 @@ var poke_search = new Vue({
       }, error => {
         console.error(error);
       });
-      if ($cookies.isKey('selected_version')) {
-        this.selected_version = $cookies.get('selected_version');
-      }
       axios({ method: "GET", url: "/api/autocomplete/" }).then(result => {
         this.autocomplete = result.data;
         for (var i = 0; i < this.autocomplete.length; i++) {
@@ -56,6 +54,11 @@ var poke_search = new Vue({
         this.selected_version = $cookies.get('selected_version');
       }
       this.load_from_url();
+      axios({ method: "GET", url: "/api/generations/" }).then(result => {
+        this.generations = result.data;
+      }, error => {
+        console.error(error);
+      });
     },
     load_from_url:function() {
       var urlParams = new URLSearchParams(window.location.search);

@@ -88,6 +88,16 @@
                     <location-encounters v-bind:location="location" v-bind:version_info="version_info"></location-encounters>
                 </td>
             </tr>
+            <tr v-if="search.length != 0 && pokemon_set.length == 0 && location_set.length == 0" key="no-results">
+                <td>
+                    <b>No results</b>
+                </td>
+            </tr>
+            <tr key="all-pokes">
+                <td>
+
+                </td>
+            </tr>
             </tbody>
         </table>
 

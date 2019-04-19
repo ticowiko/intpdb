@@ -71,24 +71,13 @@ class LocationSingularView(RetrieveAPIView):
 
 
 class PokemonPluralView(ListAPIView):
-
-    def get_serializer_class(self):
-        if 'version' in self.request.GET or 'search' in self.request.GET:
-            return PokemonVersionEnrichedSerializer
-        return PokemonSerializer
+    serializer_class = PokemonVersionEnrichedSerializer
 
     def get_queryset(self):
-        if 'version' in self.request.GET or 'search' in self.request.GET:
-            return Pokemon.versioned.enrich(
-                version_name=self.request.GET.get('version'),
-                search=self.request.GET.get('search'),
-            )[:5]
-        return Pokemon.objects.select_related(
-            'primary_type',
-            'secondary_type',
-        ).order_by(
-            'species__number',
-        ).all()
+        return Pokemon.versioned.enrich(
+            version_name=self.request.GET.get('version'),
+            search=self.request.GET.get('search'),
+        )[:5]
 
 
 class PokemonSingularView(RetrieveAPIView):
@@ -98,6 +87,17 @@ class PokemonSingularView(RetrieveAPIView):
     def get_queryset(self):
         return Pokemon.versioned.enrich(
             self.request.GET.get('version', 'red'),
+        ).all()
+
+
+class GenerationPluralView(ListAPIView):
+    serializer_class = GenerationPokemonListSerializer
+
+    def get_queryset(self):
+        return Generation.objects.order_by(
+            'id',
+        ).prefetch_related(
+            'species_set__pokemon_set',
         ).all()
 
 
