@@ -106,8 +106,6 @@ class Command(BaseCommand):
             'max_level': 'max',
             'chance': 'sum',
         })
-        all.to_csv('all-encounters.csv', index=False)
-        grouped.to_csv('grouped-encounters.csv', index=False)
         grouped = grouped.to_dict('records')
         # Risky but cheap to repopulate
         Encounter.objects.all().delete()
