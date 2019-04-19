@@ -90,8 +90,9 @@ class Command(BaseCommand):
 
     def group_encounters(self):
         self.stdout.write('Grouping encounter data...')
-        df = pd.DataFrame(list(Encounter.objects.all().values()))
-        grouped = df.groupby(
+        all = pd.DataFrame(list(Encounter.objects.all().values()))
+        all = all.fillna('')
+        grouped = all.groupby(
             by=[
                 'location_id',
                 'pokemon_id',
@@ -105,12 +106,15 @@ class Command(BaseCommand):
             'max_level': 'max',
             'chance': 'sum',
         })
+        all.to_csv('all-encounters.csv', index=False)
         grouped.to_csv('grouped-encounters.csv', index=False)
-        return
         grouped = grouped.to_dict('records')
         # Risky but cheap to repopulate
         Encounter.objects.all().delete()
         for group in grouped:
+            for key in group:
+                if group[key] == '':
+                    group[key] = None
             Encounter.objects.update_or_create(
                 **{
                     key: value for key, value in group.items() if key.endswith('id')
