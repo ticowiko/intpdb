@@ -210,15 +210,11 @@ class LocationSerializer(serializers.ModelSerializer):
 
 
 class SpeciesPokemonListSerializer(serializers.ModelSerializer):
-    pokemon_set = PokemonSerializer(many=True)
+    main_form = PokemonSerializer()
 
     class Meta:
         model = Species
-        fields = tuple(
-            field.name for field in Species._meta.fields
-        ) + (
-            'pokemon_set',
-        )
+        fields = '__all__'
 
 
 class GenerationPokemonListSerializer(serializers.ModelSerializer):

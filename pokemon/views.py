@@ -101,13 +101,10 @@ class GenerationPluralView(ListAPIView):
                 'species_set',
                 queryset=Species.objects.order_by(
                     'number',
-                ).prefetch_related(
-                    Prefetch(
-                        'pokemon_set',
-                        queryset=Pokemon.objects.order_by(
-                            'id',
-                        ).all()
-                    )
+                ).select_related(
+                    'main_form',
+                    'main_form__primary_type',
+                    'main_form__secondary_type',
                 ).all()
             )
         ).all()

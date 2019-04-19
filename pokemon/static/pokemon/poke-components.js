@@ -164,9 +164,7 @@ Vue.component('poke-generations', {
     generation_rows:function(generation, ncols) {
       pokemon = [];
       for (var i = 0; i < generation.species_set.length; i++) {
-        for (var j = 0; j < generation.species_set[i].pokemon_set.length; j++) {
-          pokemon.push(generation.species_set[i].pokemon_set[j]);
-        }
+        pokemon.push(generation.species_set[i].main_form);
       }
       current = 0;
       rows = [];

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-rm pokemon/migrations/*;
+rm -rf pokemon/migrations/*;
 touch pokemon/migrations/__init__.py;
 sudo -u postgres dropdb intpdb;
 sudo -u postgres createdb -O intpdb_user intpdb;

@@ -43,7 +43,7 @@ function string_distance(a, b){
   }
 
   return matrix[b.length][a.length];
-};
+}
 
 Vue.component('autocomplete', {
   name: "autocomplete",
@@ -124,7 +124,9 @@ Vue.component('autocomplete', {
       }
     },
     onEnter() {
-      this.search = this.results[this.arrowCounter];
+      if (this.arrowCounter >= 0 && this.arrowCounter < this.results.length) {
+        this.search = this.results[this.arrowCounter];
+      }
       this.isOpen = false;
       this.arrowCounter = -1;
     },
