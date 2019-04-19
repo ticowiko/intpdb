@@ -97,7 +97,19 @@ class GenerationPluralView(ListAPIView):
         return Generation.objects.order_by(
             'id',
         ).prefetch_related(
-            'species_set__pokemon_set',
+            Prefetch(
+                'species_set',
+                queryset=Species.objects.order_by(
+                    'number',
+                ).prefetch_related(
+                    Prefetch(
+                        'pokemon_set',
+                        queryset=Pokemon.objects.order_by(
+                            'id',
+                        ).all()
+                    )
+                ).all()
+            )
         ).all()
 
 

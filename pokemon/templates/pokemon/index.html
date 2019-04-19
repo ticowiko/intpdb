@@ -88,14 +88,14 @@
                     <location-encounters v-bind:location="location" v-bind:version_info="version_info"></location-encounters>
                 </td>
             </tr>
-            <tr v-if="search.length != 0 && pokemon_set.length == 0 && location_set.length == 0" key="no-results">
+            <tr v-if="search.length != 0 && pokemon_set.length == 0 && location_set.length == 0" key="no-results" class="search-list-item">
                 <td>
                     <b>No results</b>
                 </td>
             </tr>
-            <tr key="all-pokes">
+            <tr key="all-pokes" v-if="pokemon_set.length == 0 && location_set.length == 0" class="search-list-item">
                 <td>
-
+                    <poke-generations v-bind:generations="generations"></poke-generations>
                 </td>
             </tr>
             </tbody>
@@ -112,6 +112,8 @@
 {% include "./templates/poke-display.html" %}
 {% include "./templates/poke-inline.html" %}
 
+{% include "./templates/poke-generations.html" %}
+
 {% include "./templates/poke-stats.html" %}
 {% include "./templates/poke-evo.html" %}
 {% include "./templates/poke-types.html" %}
@@ -122,4 +124,5 @@
 {% include "./templates/location-encounters.html" %}
 
 <script src="{% static 'pokemon/autocomplete.js' %}"></script>
+<script src="{% static 'pokemon/poke-components.js' %}"></script>
 <script src="{% static 'pokemon/poke-search.js' %}"></script>

@@ -1,0 +1,30 @@
+{% verbatim %}
+<template id="poke-generations">
+    <table>
+        <tr v-for="generation in generations">
+            <td>
+                <table>
+                    <tr>
+                        <th class="evo-header">
+                            <b>Generation {{ generation.name }}</b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table>
+                                <tr v-for="row in generation_rows(generation, 5)">
+                                    <td v-for="pokemon in row" class="generation-cell">
+                                        <template v-if="pokemon">
+                                            <poke-inline v-bind:pokemon="pokemon"></poke-inline>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</template>
+{% endverbatim %}

@@ -1,7 +1,7 @@
 {% verbatim %}
 <template id="poke-inline">
     <span>
-        <table>
+        <table style="display: inline-table;">
             <tr>
                 <td>
                     <img style="cursor: pointer; height: 40px;" class="poke-sprite" v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" v-on:click="$root.set_search(split_cap(pokemon.form_name))">
