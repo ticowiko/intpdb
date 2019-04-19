@@ -40,4 +40,5 @@ class Command(BaseCommand):
 
         # TODO : account for abilities in resistances
         # TODO : add breeding moves to evolutions
+        # TODO : group encounters
         # TODO : find better source for encounters

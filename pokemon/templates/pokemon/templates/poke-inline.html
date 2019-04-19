@@ -7,12 +7,23 @@
                     <img style="cursor: pointer; height: 40px;" class="poke-sprite" v-bind:src="pokemon.sprite_url" v-bind:alt="pokemon.form_name" v-on:click="$root.set_search(split_cap(pokemon.form_name))">
                 </td>
                 <td>
-                    <span v-bind:class="pokemon.primary_type.name + ' type-sprite'">
-                        {{ split_cap(pokemon.primary_type.name) }}
-                    </span>
-                    <span v-if="pokemon.secondary_type" v-bind:class="pokemon.secondary_type.name + ' type-sprite'">
-                        {{ split_cap(pokemon.secondary_type.name) }}
-                    </span>
+                    <table>
+                        <tr>
+                            <td>
+                                <b>{{ split_cap(pokemon.form_name) }}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span v-bind:class="pokemon.primary_type.name + ' type-sprite'">
+                                    {{ split_cap(pokemon.primary_type.name) }}
+                                </span>
+                                <span v-if="pokemon.secondary_type" v-bind:class="pokemon.secondary_type.name + ' type-sprite'">
+                                    {{ split_cap(pokemon.secondary_type.name) }}
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
