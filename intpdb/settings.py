@@ -23,11 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if 'RDS_HOSTNAME' in os.environ else True
 
 ALLOWED_HOSTS = [
     'localhost',
     'intpdb-prod.vhempmca9w.eu-west-3.elasticbeanstalk.com',
+    'pkdx.io',
 ]
 
 
