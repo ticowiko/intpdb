@@ -43,7 +43,7 @@ class Command(BaseCommand):
                 self.stderr.write("Multiple evolutions for " + evolution['species']['name'])
             details = evolution['evolution_details'][0]
             Species.objects.filter(name=evolution['species']['name']).update(
-                evolution_chain=EvolutionChain.objects.get_or_create(id=chain_id)[0],
+                evolution_chain=EvolutionChain.objects.update_or_create(id=chain_id)[0],
                 evolves_from=self.cacher.get(Species, name=chain['species']['name']),
                 evolution_level=int(details['min_level']) if details['min_level'] is not None else None,
                 evolution_condition=evolution['evolution_details'][0],
@@ -52,7 +52,7 @@ class Command(BaseCommand):
             self.handle_evo(evolution, chain_id, depth+1)
 
     def process_generation(self, data):
-        Generation.objects.get_or_create(
+        Generation.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': self.int_to_gen[data['id']]
@@ -60,7 +60,7 @@ class Command(BaseCommand):
         )
 
     def process_version_group(self, data):
-        VersionGroup.objects.get_or_create(
+        VersionGroup.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -69,7 +69,7 @@ class Command(BaseCommand):
         )
 
     def process_version(self, data):
-        Version.objects.get_or_create(
+        Version.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -78,7 +78,7 @@ class Command(BaseCommand):
         )
 
     def process_species(self, data):
-        Species.objects.get_or_create(
+        Species.objects.update_or_create(
             number=data['order'],
             defaults={
                 'name': data['name'],
@@ -88,7 +88,7 @@ class Command(BaseCommand):
 
     def process_evo(self, data):
         Species.objects.filter(name=data['chain']['species']['name']).update(
-            evolution_chain=EvolutionChain.objects.get_or_create(id=data['id'])[0],
+            evolution_chain=EvolutionChain.objects.update_or_create(id=data['id'])[0],
             evolution_rank=0,
         )
         self.handle_evo(data['chain'], data['id'], 1)
@@ -97,7 +97,7 @@ class Command(BaseCommand):
         if not data['is_main_series']:
             self.stderr.write("Skipping " + data['name'] + ' (' + str(data['id']) + ')')
             return
-        Ability.objects.get_or_create(
+        Ability.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -113,7 +113,7 @@ class Command(BaseCommand):
         if data['id'] >= 10000:
             self.stderr.write('Skipping move ' + str(data['id']) + ' ...')
             return
-        Move.objects.get_or_create(
+        Move.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -132,7 +132,7 @@ class Command(BaseCommand):
         )
 
     def process_machine(self, data):
-        MoveMachine.objects.get_or_create(
+        MoveMachine.objects.update_or_create(
             id=data['id'],
             defaults={
                 'move': self.cacher.get(Move, name=data['move']['name']),
@@ -142,7 +142,7 @@ class Command(BaseCommand):
         )
 
     def process_move_learn_method(self, data):
-        MoveLearnMethod.objects.get_or_create(
+        MoveLearnMethod.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -156,7 +156,7 @@ class Command(BaseCommand):
         stats = {stat['stat']['name'].replace('-', '_'): stat['base_stat'] for stat in data['stats']}
         if set(stats.keys()) != {'speed', 'special_defense', 'special_attack', 'defense', 'attack', 'hp'}:
             raise CommandError('ERROR Got stats ' + str(stats.keys()))
-        pokemon, _ = Pokemon.objects.get_or_create(
+        pokemon, _ = Pokemon.objects.update_or_create(
             id=data['id'],
             defaults={
                 'species': self.cacher.get(Species, name=data['species']['name']),
@@ -169,7 +169,7 @@ class Command(BaseCommand):
             }
         )
         for ability in data['abilities']:
-            PokemonAbility.objects.get_or_create(
+            PokemonAbility.objects.update_or_create(
                 pokemon=pokemon,
                 ability=self.cacher.get(Ability, name=ability['ability']['name']),
                 defaults={
@@ -184,7 +184,7 @@ class Command(BaseCommand):
                 #     " from " + version_move['version_group']['name'] +
                 #     " move " + move.name
                 # )
-                PokemonMoves.objects.get_or_create(
+                PokemonMoves.objects.update_or_create(
                     pokemon=pokemon,
                     version_group=self.cacher.get(VersionGroup, name=version_move['version_group']['name']),
                     move=move,
@@ -200,7 +200,7 @@ class Command(BaseCommand):
                 )
 
     def process_encounter_condition_value(self, data):
-        EncounterCondition.objects.get_or_create(
+        EncounterCondition.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -208,7 +208,7 @@ class Command(BaseCommand):
         )
 
     def process_encounter_method(self, data):
-        EncounterMethod.objects.get_or_create(
+        EncounterMethod.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -216,7 +216,7 @@ class Command(BaseCommand):
         )
 
     def process_location_area(self, data):
-        location, _ = Location.objects.get_or_create(
+        location, _ = Location.objects.update_or_create(
             id=data['id'],
             defaults={
                 'name': data['name'],
@@ -225,7 +225,7 @@ class Command(BaseCommand):
         for encounter_method_rate in data['encounter_method_rates']:
             encounter_method = self.cacher.get(EncounterMethod, name=encounter_method_rate['encounter_method']['name'])
             for version_detail in encounter_method_rate['version_details']:
-                EncounterRate.objects.get_or_create(
+                EncounterRate.objects.update_or_create(
                     location=location,
                     method=encounter_method,
                     version=self.cacher.get(Version, name=version_detail['version']['name']),
@@ -249,7 +249,7 @@ class Command(BaseCommand):
                         )
                     else:
                         condition = None
-                    Encounter.objects.get_or_create(
+                    Encounter.objects.update_or_create(
                         location=location,
                         condition=condition,
                         pokemon=pokemon,
