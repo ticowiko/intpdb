@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+# Determine env
+IN_AWS = 'RDS_HOSTNAME' in os.environ
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if 'RDS_HOSTNAME' in os.environ else True
+DEBUG = False if IN_AWS else True
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -93,7 +96,7 @@ DATABASES = {
     },
 }
 
-if 'RDS_HOSTNAME' in os.environ:
+if IN_AWS:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ['RDS_DB_NAME'],
@@ -101,6 +104,15 @@ if 'RDS_HOSTNAME' in os.environ:
         'PASSWORD': os.environ['RDS_PASSWORD'],
         'HOST': os.environ['RDS_HOSTNAME'],
         'PORT': os.environ['RDS_PORT'],
+    }
+
+# Caching
+if IN_AWS:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': 'intpdb-memcached.gl0eok.cfg.euw3.cache.amazonaws.com:11211',
+        }
     }
 
 # Password validation

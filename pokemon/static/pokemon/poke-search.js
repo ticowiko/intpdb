@@ -11,6 +11,8 @@ function mid_slash(text) {
   return unslashed.slice(0, unslashed.length/2).join(' ') + '/' + unslashed.slice(unslashed.length/2, unslashed.length).join(' ')
 }
 
+// TODO : Add a set search to pokemon that updates version. Requires the species info in the API
+
 var poke_search = new Vue({
   el: '#poke-search',
   data: {
