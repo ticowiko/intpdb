@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
+SECRET_KEY = os.environ['RDS_PASSWORD'] if IN_AWS else '!89@2*l&s1_-dm274=95wm$7t06w7sk)5^9y6fk_$s)#e%xi9&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False if IN_AWS else True
