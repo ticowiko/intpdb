@@ -30,7 +30,7 @@
                                     </td>
                                 </tr>
                                 <tr v-for="encounter in species.main_form.version_encounters">
-                                    <td class="encounter-entry" v-on:click="$root.set_search(split_cap(encounter.location.name))">{{ split_cap(encounter.location.name) }}</td>
+                                    <td class="encounter-entry" style="cursor: pointer;" v-on:click="$root.set_search(split_cap(encounter.location.name))">{{ split_cap(encounter.location.name) }}</td>
                                     <td class="encounter-entry">{{ split_cap(encounter.method.name) }}</td>
                                     <td class="encounter-entry" v-if="encounter.condition">{{ split_cap(encounter.condition.name) }}</td>
                                     <td class="encounter-entry" v-else>-</td>
