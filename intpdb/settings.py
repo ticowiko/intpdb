@@ -112,6 +112,7 @@ if IN_AWS:
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
             'LOCATION': 'intpdb-memcached.gl0eok.cfg.euw3.cache.amazonaws.com:11211',
+            'TIMEOUT': None,
         }
     }
 
