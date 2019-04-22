@@ -4,3 +4,4 @@ psycopg2-binary==2.7.7
 psycopg2==2.7.7
 pandas==0.24.2
 python-memcached
+git+git://github.com/dlrust/python-memcached-stats.git
