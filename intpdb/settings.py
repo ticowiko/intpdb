@@ -59,7 +59,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # Cache whole site
+    'django.middleware.cache.UpdateCacheMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
+
+CACHE_MIDDLEWARE_ALIAS = 'intpdb_cache'
+CACHE_MIDDLEWARE_SECONDS = 25920000
+CACHE_MIDDLEWARE_KEY_PREFIX = 'intpdb'
 
 ROOT_URLCONF = 'intpdb.urls'
 
