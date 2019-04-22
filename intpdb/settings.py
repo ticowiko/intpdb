@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-CACHE_MIDDLEWARE_ALIAS = 'intpdb_cache'
+CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 25920000
 CACHE_MIDDLEWARE_KEY_PREFIX = 'intpdb'
 
@@ -120,6 +120,12 @@ if IN_AWS:
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
             'LOCATION': 'intpdb-memcached.gl0eok.cfg.euw3.cache.amazonaws.com:11211',
             'TIMEOUT': None,
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         }
     }
 
