@@ -122,6 +122,7 @@ class Move(Model):
     category = ForeignKey(MoveCategory, on_delete=CASCADE)
     power = IntegerField(null=True, blank=True)
     accuracy = IntegerField(null=True, blank=True)
+    effect_chance = IntegerField(null=True, blank=True)
     pp = IntegerField()
     priority = IntegerField()
 

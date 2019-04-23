@@ -18,7 +18,8 @@
                                     <th class="move-header">Type</th>
                                     <th class="move-header">Category</th>
                                     <th class="move-header">Power</th>
-                                    <th class="move-header">Accuracy</th>
+                                    <th class="move-header">Acc.</th>
+                                    <th class="move-header">Eff.</th>
                                     <th class="move-header">PP</th>
                                 </tr>
                                 <tr v-for="move in method_moves(pokemon.version_moves, learn_method)">
@@ -29,6 +30,7 @@
                                     <td v-bind:class="'move-entry ' + move.move.category">{{ move.move.category }}</td>
                                     <td class="move-entry">{{ convert_if_none(move.move.power, '-') }}</td>
                                     <td class="move-entry">{{ convert_if_none(move.move.accuracy, '-') }}</td>
+                                    <td class="move-entry">{{ convert_if_none(move.move.effect_chance, '-') }}</td>
                                     <td class="move-entry">{{ move.move.pp }}</td>
                                 </tr>
                             </table>

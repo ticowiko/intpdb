@@ -128,6 +128,7 @@ class Command(BaseCommand):
                 'accuracy': data['accuracy'],
                 'pp': data['pp'],
                 'priority': data['priority'],
+                'effect_chance': data['effect_chance'],
             }
         )
 
