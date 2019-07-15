@@ -61,7 +61,7 @@ class Command(BaseCommand):
             1212: 'tm99',
             1215: 'tm100',
         }
-        for machine_id in [1195, 1209, 1190, 1212, 1203, 1206, 1200, 1215]:
+        for machine_id in fix:
             data = json.load(open(self.path+'/data/machine/' + str(machine_id) + '.json', 'r'))
             data['item']['name'] = fix[machine_id]
             data['item']['url'] = None
