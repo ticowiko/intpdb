@@ -191,8 +191,8 @@ class EncounterRateSerializer(serializers.ModelSerializer):
     method = model_serializer_factory(EncounterMethod)()
 
     class Meta:
-        model = Encounter
-        fields = '__all__'
+        model = EncounterRate
+        fields = "__all__"
 
 
 class LocationSerializer(serializers.ModelSerializer):
