@@ -14,21 +14,30 @@ class Command(BaseCommand):
         pass
 
     def loop(self, url, folder):
+        self.stdout.write(f"Looping on {url}")
         abs_folder = self.path + '/data/' + folder + '/'
         if not os.path.isdir(abs_folder):
             os.mkdir(abs_folder)
-        for result in requests.get(url).json()['results']:
+        response = requests.get(url).json()
+        if response["next"] is not None:
+            raise ValueError("Got paginated results")
+        for result in response['results']:
             item = [part for part in result['url'].split('/') if part != ''][-1]
             filename = abs_folder + item + '.json'
             if not os.path.exists(filename):
+                self.stdout.write(f"Fetching {result['url']} (Total : {len(response['results'])})")
+                item_response = requests.get(result['url'])
+                if item_response.status_code == 404:
+                    self.stdout.write(f"SKIPPING 404 on {result['url']}")
+                    continue
+                data = item_response.json()
                 with open(filename, 'w') as file:
                     json.dump(
-                        requests.get(result['url']).json(),
+                        data,
                         file,
                         indent=4,
                     )
                 self.stdout.write("SUCCESS " + folder + ' ' + item)
-                time.sleep(1)
             else:
                 self.stdout.write("SKIPPING " + folder + ' ' + item)
 
@@ -49,20 +58,4 @@ class Command(BaseCommand):
             'encounter-condition-value',
         ]:
             self.stdout.write("Fetching '" + endpoint + "'...")
-            self.loop('https://pokeapi.co/api/v2/' + endpoint + '/', endpoint)
-        self.stdout.write("Fixing bugged machines from ORAS...")
-        fix = {
-            1190: 'tm93',
-            1195: 'tm94',
-            1200: 'tm95',
-            1203: 'tm96',
-            1206: 'tm97',
-            1209: 'tm98',
-            1212: 'tm99',
-            1215: 'tm100',
-        }
-        for machine_id in fix:
-            data = json.load(open(self.path+'/data/machine/' + str(machine_id) + '.json', 'r'))
-            data['item']['name'] = fix[machine_id]
-            data['item']['url'] = None
-            json.dump(data, open(self.path+'/data/machine/' + str(machine_id) + '.json', 'w'), indent=4)
+            self.loop('https://pokeapi.co/api/v2/' + endpoint + '/?limit=10000', endpoint)

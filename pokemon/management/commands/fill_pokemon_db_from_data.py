@@ -16,7 +16,14 @@ class GetCacher:
         self.cache = {}
 
     def get(self, model, **query):
-        return self.cache.setdefault(model.__name__+'_+_'+str(query), model.objects.get(**query))
+        try:
+            key = model.__name__+'_+_'+str(query)
+            if key not in self.cache:
+                self.cache[key] = model.objects.get(**query)
+            return self.cache[key]
+        except Exception as e:
+            print(f"Failed caching '{model.__class__.__name__}' with query '{query}'.")
+            raise e
 
 
 class Command(BaseCommand):
@@ -46,12 +53,12 @@ class Command(BaseCommand):
             self.stdout.write("Evolving species " + evolution['species']['name'] + "...")
             if len(evolution['evolution_details']) > 1:
                 self.stderr.write("Multiple evolutions for " + evolution['species']['name'])
-            details = evolution['evolution_details'][0]
+            details = evolution['evolution_details'][0] if evolution['evolution_details'] else {"min_level": None}
             Species.objects.filter(name=evolution['species']['name']).update(
                 evolution_chain=EvolutionChain.objects.update_or_create(id=chain_id)[0],
                 evolves_from=self.cacher.get(Species, name=chain['species']['name']),
                 evolution_level=int(details['min_level']) if details['min_level'] is not None else None,
-                evolution_condition=evolution['evolution_details'][0],
+                evolution_condition=details,
                 evolution_rank=depth,
             )
             self.handle_evo(evolution, chain_id, depth+1)
@@ -243,6 +250,7 @@ class Command(BaseCommand):
             pokemon = self.cacher.get(Pokemon, form_name=pokemon_encounter['pokemon']['name'])
             for version_detail in pokemon_encounter['version_details']:
                 version = self.cacher.get(Version, name=version_detail['version']['name'])
+                # TODO : allow for multiple conditions (requires change in data model)
                 for encounter_detail in version_detail['encounter_details']:
                     if len(encounter_detail['condition_values']) > 1:
                         self.stderr.write("Found encounter with multiple conditions, using first condition...")
@@ -303,13 +311,8 @@ class Command(BaseCommand):
             ('encounter-method', self.process_encounter_method),
             ('location-area', self.process_location_area),
         ])
-        if items:
-            for item in items:
-                self.loop(item, loops[item])
-        else:
-            for loop in loops:
-                self.loop(loop, loops[loop])
+        for item in items or loops:
+            self.loop(item, loops[item])
 
     def handle(self, *args, **options):
-
         self.process(options['items'])
