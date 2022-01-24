@@ -156,7 +156,7 @@ class EncounterMethod(Model):
 
 class EncounterCondition(Model):
     id = IntegerField(primary_key=True)
-    name = CharField(max_length=50, unique=True)
+    name = CharField(max_length=500, unique=True)
     sprite_url = CharField(max_length=100, blank=True, null=True)
 
 

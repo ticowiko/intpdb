@@ -47,6 +47,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('items', nargs='*')
+        parser.add_argument('-m', '--min-id', metavar="MIN_ID", type=int, help="Skip files prior to this.")
 
     def handle_evo(self, chain, chain_id, depth):
         for evolution in chain['evolves_to']:
@@ -250,12 +251,14 @@ class Command(BaseCommand):
             pokemon = self.cacher.get(Pokemon, form_name=pokemon_encounter['pokemon']['name'])
             for version_detail in pokemon_encounter['version_details']:
                 version = self.cacher.get(Version, name=version_detail['version']['name'])
-                # TODO : allow for multiple conditions (requires change in data model)
                 for encounter_detail in version_detail['encounter_details']:
                     if len(encounter_detail['condition_values']) > 1:
-                        self.stderr.write("Found encounter with multiple conditions, using first condition...")
-                        condition = self.cacher.get(
-                            EncounterCondition, name=encounter_detail['condition_values'][0]['name']
+                        self.stderr.write("Found encounter with multiple conditions, combining conditions...")
+                        max_condition_id = EncounterCondition.objects.aggregate(max_id=Max("id"))["max_id"]
+                        condition_id = 1001 if max_condition_id <= 1000 else max_condition_id + 1
+                        condition, _ = EncounterCondition.objects.get_or_create(
+                            name=' + '.join(condition_value['name'] for condition_value in encounter_detail['condition_values']),
+                            defaults={"id": condition_id},
                         )
                     elif len(encounter_detail['condition_values']) == 1:
                         condition = self.cacher.get(
@@ -276,7 +279,7 @@ class Command(BaseCommand):
                         }
                     )
 
-    def loop(self, folder, function):
+    def loop(self, folder, function, min_id):
         filepaths = sorted(
             glob.glob(self.path + '/data/' + folder + '/*.json'),
             key=lambda x: int(x.split('/')[-1].split('.')[0])
@@ -284,6 +287,13 @@ class Command(BaseCommand):
         for filepath in filepaths:
             data = json.load(open(filepath, 'r'))
             now = time.time()
+            if data['id'] < min_id:
+                self.stdout.write(
+                    "Skipping " + folder +
+                    " (" + str(data['id']) + "/" + str(len(filepaths)) + ")" +
+                    " %.3f/%.3f" % (time.time() - self.start, now - self.last)
+                )
+                continue
             self.stdout.write(
                 "Processing " + folder +
                 " (" + str(data['id']) + "/" + str(len(filepaths)) + ")" +
@@ -293,7 +303,7 @@ class Command(BaseCommand):
             self.stdout.flush()
             function(data)
 
-    def process(self, items):
+    def process(self, items, min_id):
         self.start = time.time()
         self.last = self.start
         loops = OrderedDict([
@@ -312,7 +322,7 @@ class Command(BaseCommand):
             ('location-area', self.process_location_area),
         ])
         for item in items or loops:
-            self.loop(item, loops[item])
+            self.loop(item, loops[item], min_id)
 
     def handle(self, *args, **options):
-        self.process(options['items'])
+        self.process(options['items'], options['min_id'])
