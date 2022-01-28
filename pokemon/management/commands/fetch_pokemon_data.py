@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 self.stdout.write(f"Fetching {result['url']} (Total : {len(response['results'])})")
                 item_response = requests.get(result['url'])
                 if item_response.status_code == 404:
-                    self.stdout.write(f"SKIPPING 404 on {result['url']}")
+                    self.stderr.write(f"SKIPPING 404 on {result['url']}")
                     continue
                 data = item_response.json()
                 with open(filename, 'w') as file:
