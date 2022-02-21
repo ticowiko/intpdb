@@ -31,6 +31,7 @@ def mid_slash(value):
         split[int(len(split)/2):]
     )
 
+
 @register.filter
 def convert_if_none(value, arg):
     return value or arg
