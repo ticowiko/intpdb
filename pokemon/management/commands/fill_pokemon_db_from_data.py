@@ -47,7 +47,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('items', nargs='*')
-        parser.add_argument('-m', '--min-id', metavar="MIN_ID", type=int, help="Skip files prior to this.")
+        parser.add_argument('-m', '--min-id', metavar="MIN_ID", type=int, help="Skip files prior to this.", default=0)
 
     def handle_evo(self, chain, chain_id, depth):
         for evolution in chain['evolves_to']:
@@ -284,19 +284,19 @@ class Command(BaseCommand):
             glob.glob(self.path + '/data/' + folder + '/*.json'),
             key=lambda x: int(x.split('/')[-1].split('.')[0])
         )
-        for filepath in filepaths:
+        for n, filepath in enumerate(filepaths):
             data = json.load(open(filepath, 'r'))
             now = time.time()
             if data['id'] < min_id:
                 self.stdout.write(
                     "Skipping " + folder +
-                    " (" + str(data['id']) + "/" + str(len(filepaths)) + ")" +
+                    " (" + str(n+1) + "/" + str(len(filepaths)) + ")" +
                     " %.3f/%.3f" % (time.time() - self.start, now - self.last)
                 )
                 continue
             self.stdout.write(
                 "Processing " + folder +
-                " (" + str(data['id']) + "/" + str(len(filepaths)) + ")" +
+                " (" + str(n+1) + "/" + str(len(filepaths)) + ")" +
                 " %.3f/%.3f" % (time.time() - self.start, now - self.last)
             )
             self.last = time.time()

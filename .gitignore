@@ -1,5 +1,5 @@
-pokemon/management/commands/data/*
-!pokemon/management/commands/data/type_effectiveness.csv
+/pokemon/management/commands/data/*
+/pokemon/management/commands/data/type_effectiveness.csv
 __pycache__/*
 */__pycache__/*
 */*/__pycache__/*

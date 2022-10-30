@@ -44,7 +44,9 @@ class Command(BaseCommand):
         self.stdout.write('Computing type resistances...')
         PokemonTypeEffectiveness.objects.all().delete()
         matrix = TypeEffectiveness.matrix()
-        for pokemon in Pokemon.objects.all():
+        count = Pokemon.objects.count()
+        for n, pokemon in enumerate(Pokemon.objects.all()):
+            print(f"({n+1}/{count})...")
             for attack in matrix:
                 effectiveness = matrix[attack][pokemon.primary_type_id]
                 if pokemon.secondary_type is not None:
@@ -57,13 +59,23 @@ class Command(BaseCommand):
 
     def breeding_moves(self):
         self.stdout.write('Adding breeding moves to evolutions...')
-        for baby in Pokemon.objects.filter(
-                id__in=Species.objects.filter(
-                    evolution_rank=0,
-                ).values(
-                    'main_form_id',
+        count = Pokemon.objects.filter(
+            id__in=Species.objects.filter(
+                evolution_rank=0,
+            ).values(
+                'main_form_id',
+            )
+        ).count()
+        for n, baby in enumerate(
+                Pokemon.objects.filter(
+                    id__in=Species.objects.filter(
+                        evolution_rank=0,
+                    ).values(
+                        'main_form_id',
+                    )
                 )
         ):
+            print(f"({n+1}/{count})...")
             baby_egg_moves = PokemonMoves.objects.filter(
                 pokemon=baby,
                 learn_method__name='egg',
