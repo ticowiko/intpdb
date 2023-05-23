@@ -4,5 +4,5 @@ psycopg2-binary==2.8.3
 pandas>=1.5.1
 python-memcached
 ipython
-requests==2.27.1
+requests==2.31.0
 cython==0.29.32
